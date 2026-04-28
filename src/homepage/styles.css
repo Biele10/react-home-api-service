@@ -1,0 +1,20 @@
+.homepage
+{
+    height: 100vh;
+    width: 100vw;
+    background-color: #29c4b7;
+    display: flex;
+    flex-direction: column;
+}
+
+.homepage_header
+{
+    margin-top: 10vh;
+    min-height: 60px;
+    min-width: 400px;
+    border-style: solid;
+    border-color: aliceblue;
+    border-radius: 8px;
+    background-color: #25b0a4;
+    text-align: center;
+}
