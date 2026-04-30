@@ -1,13 +1,13 @@
-import Header from "./Header";
-import Body from "./Body";
+import HomePageHeader from "./HomePageHeader";
+import HomePageBody from "./HomePageBody";
 import './styles.css';
 
 function HomePage()
 {
     return(
         <div className="homepage">
-        <Header/>
-        <Body/>
+        <HomePageHeader/>
+        <HomePageBody/>
         </div>
     )
 }

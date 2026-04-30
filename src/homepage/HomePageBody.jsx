@@ -1,6 +1,6 @@
 import './styles.css';
 
-function Body()
+function HomePageBody()
 {
     return(
         <div>
@@ -9,4 +9,4 @@ function Body()
     )
 }
 
-export default Body;
+export default HomePageBody;
