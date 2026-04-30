@@ -1,9 +1,12 @@
 import HomePage from "./homepage/HomePage";
+import './styles/index.css';
 
 function App() {
   return (
-    <div>
-      <HomePage/>
+    <div className="page">
+      <div className="child_page">
+        <HomePage/>
+      </div>
     </div>
   );
 }

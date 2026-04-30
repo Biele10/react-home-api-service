@@ -8,9 +8,47 @@ body
   -moz-osx-font-smoothing: grayscale;
 }
 
+.page
+{
+    height: 100vh;
+    width: 100vw;
+    background: #2A7B9B;
+    background: linear-gradient(0deg, rgba(42, 123, 155, 1) 27%, rgba(87, 199, 133, 1) 100%, rgba(237, 221, 83, 1) 100%);
+    display: flex;
+
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.child_page
+{
+    width: 100%;
+    max-width: 1100px;
+    padding: 20px;
+    margin-top: 50px;
+
+    background: white;
+    border-radius: 12px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 .page_header_container
 {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+button {
+  background-color: #339e7c;
+  transition: all 250ms ease;
+}
+
+button:hover {
+  background-color: #57C785;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }

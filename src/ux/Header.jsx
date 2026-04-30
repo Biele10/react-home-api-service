@@ -1,13 +1,12 @@
-import './../styles/index.css';
-
 // Sets the default CSS values for the header class.
 const defaultStyle = {
-  marginTop: '10vh',
+  marginTop: '5vh',
   minHeight: '60px',
   minWidth: '400px',
   borderStyle: 'solid',
-  borderColor: 'aliceblue',
+  borderColor: '#75bdb7',
   borderRadius: '8px',
+  borderWidth: '5px',
   backgroundColor: '#25b0a4',
   textAlign: 'center'
 };
@@ -21,7 +20,7 @@ const defaultStyle = {
  * @param {styleClassName}: string
  * @returns 
  */
-function Header({text, style = {}}) {
+function Header({text, style = {}, containerStyle = {}}) {
 
     // Takes the styles passed in and overwrites any of the default styles which
     // were defined originally
