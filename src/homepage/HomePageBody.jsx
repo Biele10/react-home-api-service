@@ -1,24 +1,19 @@
 import Button from "../ux/Button";
-import Container from "../ux/Container";
 
-function HomePageBody()
-{
-    return(
-        <div>
-        <Container containerStyle={
-            {margin: '50px 0 0 50px'}
-        }>
-        <Button 
-        text="Click me"
-        onClickReference={LedButton}
-        />
-
-        <Button
-        text="Another one"
-        onClickReference={null}/>
-        </Container>
-        </div>
-    )
+function HomePageBody() {
+  return (
+    <div>
+          <Button
+            text="Click me"
+            onClickReference={LedButton}
+            style=
+            {{
+                minHeight: '100%',
+                margin: '0 0 15px 0'
+            }}
+          />
+    </div>
+  );
 }
 
 function LedButton()

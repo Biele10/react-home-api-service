@@ -6,7 +6,9 @@ const defaultButtonStyles = {
   borderColor: 'aliceblue',
   borderRadius: '10px',
   textAlign: 'center',
-  cursor: 'pointer'
+  margin: '0 0 0 0',
+  padding: '1.5rem 3.5rem',
+  cursor: 'pointer',
 };
 
 const defaultContainerStyles = {

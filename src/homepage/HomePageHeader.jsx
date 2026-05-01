@@ -7,7 +7,7 @@ function HomePageHeader()
         text="HomeAPI"
         style={
             {marginTop: '10vh'},
-            {width: '300px'}
+            {minWidth: '50%'}
         }/>
     )
 }
