@@ -18,7 +18,7 @@ function HomePageBody() {
 
 function LedButton()
 {
-    console.log("this turns on the LED");
+  console.log("this turns on the LED");
 }
 
 export default HomePageBody;
