@@ -2,7 +2,7 @@ import config from './../config.json' with { type: 'json' };
 
 // Contains all functions that link to the 
 
-async function get(module, method, params)
+async function get(module, method, params=null)
 {
     const query = new URLSearchParams({
     module,

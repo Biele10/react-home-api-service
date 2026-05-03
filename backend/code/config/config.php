@@ -1,3 +1,3 @@
 <?php
 
-const PI_SCRIPTS_PATH = '/var/www/Home-Api-Build/backend/code/pi/scripts/';
+const PI_SCRIPTS_PATH = '/home/ubuntu/pi/projects/Home-Api-Build/backend/code/pi/scripts/';
