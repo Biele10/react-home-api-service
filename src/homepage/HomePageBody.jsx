@@ -1,4 +1,5 @@
 import Button from "../ux/Button";
+import get from "../api/crud";
 
 function HomePageBody() {
   return (
@@ -18,7 +19,7 @@ function HomePageBody() {
 
 function LedButton()
 {
-  console.log("this turns on the LED");
+  get('pi', 'shutdown');
 }
 
 export default HomePageBody;

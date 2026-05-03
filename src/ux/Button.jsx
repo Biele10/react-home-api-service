@@ -11,9 +11,9 @@ const defaultButtonStyles = {
   cursor: 'pointer',
 };
 
-const defaultContainerStyles = {
+// const defaultContainerStyles = {
 
-}
+// }
 
 /**
  * Base component class for a button.

@@ -1,11 +1,18 @@
-import config from './../config.json' assert { type: 'json' };
+import config from './../config.json' with { type: 'json' };
 
 // Contains all functions that link to the 
 
 async function get(module, method, params)
 {
-    const api_url = config.api_path;
-    try
+    const query = new URLSearchParams({
+    module,
+    method,
+    params: JSON.stringify(params),
+    });
+
+    const api_url = config.api_path + '?' + query.toString();
+    console.log(api_url);
+    try 
     {
         const response = await fetch(api_url);
         if (!response.ok)
@@ -23,3 +30,5 @@ async function get(module, method, params)
     }
 
 }
+
+export default get;
