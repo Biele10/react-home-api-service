@@ -17,7 +17,7 @@ class Pi
         try
         {
             shell_exec("sudo " . PI_SCRIPTS_PATH . "shutdown.sh");
-        }
+        } 
 
         catch (Throwable $th)
         {
