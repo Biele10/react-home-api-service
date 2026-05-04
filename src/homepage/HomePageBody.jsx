@@ -34,7 +34,12 @@ function LedButton()
 
 function RedLedButton()
 {
-  get('command', 'LED')
+  get('command', 'LED');
 }
+
+// function Shutdown()
+// {
+//   get('pi_command', 'shutdown');
+// }
 
 export default HomePageBody;

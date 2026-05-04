@@ -31,6 +31,21 @@ if (!empty($_GET['request_type']) && $_GET['request_type'] === 'command')
     exit;
 }
 
+// handles requests that are intended to interact with the raspberry pi
+if ($_GET['request_type'] === 'pi_command')
+{
+    if (empty($_GET['command']))
+    {
+        echo json_encode(['success' => false, 'error' => 'No command was attached to send.']);
+    }
+    
+    $piCommand = $_GET['command'];
+
+    $result = Pi::_pi_command($piCommand);
+    echo json_encode($result);
+    exit;
+}
+
 if (isset($_GET['method']))
 {
     $ledObj = new Led(4);
