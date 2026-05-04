@@ -2,17 +2,16 @@ import config from './../config.json' with { type: 'json' };
 
 // Contains all functions that link to the 
 
-async function get(module, method, params=null)
+async function get(request_type, command=null)
 {
     const query = new URLSearchParams({
-    module,
-    method,
-    params: JSON.stringify(params),
+    request_type,
+    command,
     });
 
     const api_url = config.api_path + '?' + query.toString();
-    console.log(api_url);
-    try 
+
+    try
     {
         const response = await fetch(api_url);
         if (!response.ok)

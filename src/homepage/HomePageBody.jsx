@@ -5,8 +5,18 @@ function HomePageBody() {
   return (
     <div>
           <Button
-            text="LED"
+            text="On Board LED"
             onClickReference={LedButton}
+            style=
+            {{
+                minHeight: '100%',
+                margin: '0 0 15px 0'
+            }}
+          />
+
+          <Button
+            text="Red LED"
+            onClickReference={RedLedButton}
             style=
             {{
                 minHeight: '100%',
@@ -19,7 +29,12 @@ function HomePageBody() {
 
 function LedButton()
 {
-  get('led', 'power');
+  get('command', 'onBoardLedPower');
+}
+
+function RedLedButton()
+{
+  get('command', 'LED')
 }
 
 export default HomePageBody;

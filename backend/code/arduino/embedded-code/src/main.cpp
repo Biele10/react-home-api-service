@@ -1,6 +1,9 @@
 #include <Arduino.h>
+#include "config.hpp"
 
 bool onBoardLedState = false;   // keeps track of the state of the on board led
+bool redLedState = false;
+int redLED = Config::RED_LED_PIN;
 
 // ---- blink helper ----
 void blinkLED()
@@ -17,6 +20,7 @@ void setup()
 {
   Serial.begin(9600);      // must match Python baud rate
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(redLED, OUTPUT);   // sets up red LED
 }
 
 // Main program loop, commands are read from serial.
@@ -45,7 +49,13 @@ void loop()
     else if (command == "onBoardLedPower")
     {
       onBoardLedState = !onBoardLedState;   // flips values
-      digitalWrite(LED_BUILTIN, onBoardLedState ? HIGH: LOW);
+      digitalWrite(LED_BUILTIN, onBoardLedState ? HIGH : LOW);
+    }
+
+    else if (command == "LED")    // updates RED led
+    {
+      redLedState = !redLedState;
+      digitalWrite(redLED, redLedState ? HIGH : LOW);
     }
     
     else

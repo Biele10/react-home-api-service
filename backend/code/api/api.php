@@ -15,9 +15,20 @@ set_exception_handler([ErrorHandler::class,'_handleError']);                // s
 register_shutdown_function([ErrorHandler::class, '_handleFatal']);
 
 // This file handles the proper backend logic, the api in the frontend passes the information here
-if (!empty($_GET['module']) && $_GET['module'] === 'led')
+
+// handling a simple command to send to the arduino
+if (!empty($_GET['request_type']) && $_GET['request_type'] === 'command')
 {
-    Hardware::_powerOnBoardLed();
+    if (empty($_GET['command']))
+    {
+        echo json_encode(['success' => false, 'error' => 'No command was attached to send.']);
+    }
+    
+    $command = $_GET['command'];
+
+    $result = Hardware::_command($command);
+    echo json_encode($result);
+    exit;
 }
 
 if (isset($_GET['method']))

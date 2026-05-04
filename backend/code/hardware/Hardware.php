@@ -6,10 +6,8 @@ use App\arduino\ArduinoApi;
 
 Class Hardware
 {
-    static public function _powerOnBoardLed()
+    static public function _command(string $commandToSend)
     {
-        $result = ArduinoApi::_get("onBoardLedPower");
-        echo json_encode($result);
-        exit;
+       return ArduinoApi::_get($commandToSend);
     }
 }

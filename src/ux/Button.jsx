@@ -3,7 +3,7 @@ const defaultButtonStyles = {
   minHeight: '50px',
   minWidth: '100px',
   borderStyle: 'solid',
-  borderColor: 'aliceblue',
+  borderColor: 'black',
   borderRadius: '10px',
   textAlign: 'center',
   margin: '0 0 0 0',
