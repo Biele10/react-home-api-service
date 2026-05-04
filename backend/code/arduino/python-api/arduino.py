@@ -26,6 +26,20 @@ def send_to_arduino(message):
         return True
     return False
 
+@app.route("/send_command", methods=["GET"])
+def send_command():
+    command = request.args.get('command')
+
+    if not command:
+        return jsonify({"error": "missing command"}), 400
+    
+    success = send_to_arduino(command)
+
+    if success:
+        return jsonify({'status': "sent", "command": command}), 200
+    else:
+        return jsonify({"error": "arduino not connected"}), 500
+
 # API endpoint for PHP to send data to the arduino.
 @app.route("/send", methods=["POST"])
 def send():

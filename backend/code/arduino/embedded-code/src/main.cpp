@@ -1,5 +1,7 @@
 #include <Arduino.h>
 
+bool onBoardLedState = false;   // keeps track of the state of the on board led
+
 // ---- blink helper ----
 void blinkLED()
 {
@@ -39,6 +41,13 @@ void loop()
     {
       blinkLED();
     }
+
+    else if (command == "onBoardLedPower")
+    {
+      onBoardLedState = !onBoardLedState;   // flips values
+      digitalWrite(LED_BUILTIN, onBoardLedState ? HIGH: LOW);
+    }
+    
     else
     {
       Serial.println("Unknown command: " + command);
