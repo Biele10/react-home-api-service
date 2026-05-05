@@ -20,7 +20,7 @@ async function get(request_type, command=null)
         }
 
         const result = await response.json();
-        console.log(result);
+        alert(result);
     }
     
     catch (error)

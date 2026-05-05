@@ -1,9 +1,13 @@
 // Sets the default CSS values for the Button class.
 const defaultButtonStyles = {
   minHeight: '50px',
-  minWidth: '100px',
+  minWidth: '210px',
+  maxWidth: '300px',
   borderStyle: 'solid',
   borderColor: 'black',
+  borderWidth: '3px',
+  fontWeight: 'Bold',
+  color: 'black',
   borderRadius: '10px',
   textAlign: 'center',
   margin: '0 0 0 0',

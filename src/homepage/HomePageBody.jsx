@@ -23,6 +23,16 @@ function HomePageBody() {
                 margin: '0 0 15px 0'
             }}
           />
+
+          <Button
+            text="Shutdown"
+            onClickReference={Shutdown}
+            style=
+            {{
+                minHeight: '100%',
+                margin: '0 0 15px 0'
+            }}
+          />
     </div>
   );
 }
@@ -37,9 +47,9 @@ function RedLedButton()
   get('command', 'LED');
 }
 
-// function Shutdown()
-// {
-//   get('pi_command', 'shutdown');
-// }
+function Shutdown()
+{
+  get('command', 'shutdown');
+}
 
 export default HomePageBody;

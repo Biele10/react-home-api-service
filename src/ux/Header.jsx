@@ -4,9 +4,9 @@ const defaultStyle = {
   minHeight: '60px',
   minWidth: '400px',
   borderStyle: 'solid',
-  borderColor: '#75bdb7',
+  borderColor: 'black',
   borderRadius: '8px',
-  borderWidth: '5px',
+  borderWidth: '3px',
   backgroundColor: '#25b0a4',
   textAlign: 'center'
 };

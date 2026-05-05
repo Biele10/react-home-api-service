@@ -22,15 +22,15 @@ body
 
 .child_page
 {
-    width: 60%;
-    min-width: 60%;
+    width: 40%;
+    min-width: 40%;
     padding: 20px;
     margin-top: 50px;
 
     background: white;
     border-radius: 12px;
-    border-style:ridge;
-    border-color: grey;
+    border-style:solid;
+    border-color: black;
 
     display: flex;
     flex-direction: column;

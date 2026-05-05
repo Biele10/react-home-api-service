@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import serial
 import time
+import json
 
 app = Flask(__name__)
 
@@ -18,22 +19,33 @@ except Exception as e:
     arduino = None
 
 # Function that sends data to Arduino.
-def send_to_arduino(message):
+def send_to_arduino(request_type, message, params=None):
     if arduino and arduino.is_open:
-        command = (message + "\n").encode("utf-8")
+
+        # stores like a json object
+        payload = {
+            "type": request_type,
+            "command": message,
+            "params": params or {}
+        }
+
+        command = (json.dumps(payload) + "\n").encode("utf-8")
         arduino.write(command)
         print("Sent:", message)
         return True
     return False
 
-@app.route("/send_command", methods=["GET"])
+# Function that handles basic commands to send to the arduino.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 def send_command():
     command = request.args.get('command')
 
     if not command:
         return jsonify({"error": "missing command"}), 400
-    
-    success = send_to_arduino(command)
+
+    requestType = 'command'     # tells the arduino that the given input is a simple command,
+                                # bound to a particular function
+
+    success = send_to_arduino(requestType, command)     # simple command, no params needed
 
     if success:
         return jsonify({'status': "sent", "command": command}), 200
