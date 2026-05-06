@@ -5,42 +5,6 @@ bool onBoardLedState = false;   // keeps track of the state of the on board led
 bool redLedState = false;
 int redLED = Config::RED_LED_PIN;
 
-// Function used to parse user input by & and =.
-// String inputs looks roughly like so:
-
-// type=adjust&module=LED&method=power&state=1&silent=0
-void parseCommand(String input)
-{
-  while (input.length() > 0)
-  {
-    int ampIndex = input.indexOf('&');
-    String pair;
-
-    if (ampIndex == -1)
-    {
-      pair = input;
-      input = "";
-    }
-
-    else
-    {
-      pair = input.substring(0, ampIndex);
-      input = input.substring(ampIndex + 1);
-    }
-
-    int eqIndex = pair.indexOf('=');
-    if (eqIndex == -1) continue;
-
-    String key = pair.substring(0, eqIndex);
-    String value = pair.substring(eqIndex + 1);
-
-    if (key == "module" && value == "LED")
-    {
-      // do something with values
-    }
-  }
-}
-
 // ---- blink helper ----
 void blinkLED()
 {

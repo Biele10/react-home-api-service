@@ -2,11 +2,18 @@ import config from './../config.json' with { type: 'json' };
 
 // Contains all functions that link to the 
 
-async function get(request_type, command=null)
+async function get(request_type, command = null, params = null)
 {
+    if (!request_type)
+    {
+        alert("Request type must be attached.");
+        return;
+    }
+
     const query = new URLSearchParams({
     request_type,
     command,
+    params
     });
 
     const api_url = config.api_path + '?' + query.toString();
