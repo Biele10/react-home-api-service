@@ -1,14 +1,46 @@
 #include <Arduino.h>
 #include "config.hpp"
+#include "errorHandler.hpp"
+#include <stdint.h>
+
+// TO-DO:
+// - Implement a hash table, not in this file but somewhere
+// - Handle error for if array is too large, do something with error handler
+
+void arrayExpander(String*& inputArray, uint8_t& originalSize)
+{
+  if ((uint16_t)(originalSize + Config::BASE_ARRAY_SIZE) > 255)    // array is too large, we will return an error
+  {
+    inputArray = nullptr;   // sets to null ptr to let parser know that array is too large
+    return;
+  }
+
+  uint8_t newSize = originalSize + Config::DEFAULT_ARRAY_ADDITION;    // updates size of array
+
+  String* updatedArray = new String[newSize];    // creates new array with new fixed size on the heap
+
+  for (uint8_t i = 0; i < originalSize; i++)
+  {
+    updatedArray[i] = inputArray[i];
+  }
+
+  delete[] inputArray;   // free old memory
+
+  originalSize = newSize;  // updates original size
+  inputArray = updatedArray; // replaces the old one array with new array values but maintains same pointer
+}
 
 // Function used to parse user input by & and =.
 // String inputs looks roughly like so:
 
 // type=adjust&module=LED&method=power&state=1&silent=0
-void parseCommand(String input)
+String* parseCommand(const String& input)
 {
-  int arrayIndex = 0;   // keeps track of num of values to then add to array
-  String valueArray[Config::BASE_ARRAY_SIZE];   // sets default size
+  uint8_t arrayIndex = 0;   // keeps track of num of values to then add to array
+
+  // heap pointers
+  uint8_t baseSize = Config::BASE_ARRAY_SIZE;   // creates baseSize pointer, updated dynamically later on if array size needs to increase
+  String* valueArray = new String[Config::BASE_ARRAY_SIZE];   // creates array that is moved onto heap
 
   String curValName;      // string that will be appended to to form param name
 
@@ -22,33 +54,14 @@ void parseCommand(String input)
 
     // & found, we now know that value of curValName is the full name of the command/param
     
-    if (arrayIndex >= Config::BASE_ARRAY_SIZE)    // array values has surpassed base amount, expand array
+    if (arrayIndex >= baseSize)    // array values has surpassed base amount, expand array
     {
-      int size = sizeof(valueArray) / sizeof(String);
-      arrayExpander(valueArray, size);  // directly expands the array size
+      arrayExpander(valueArray, baseSize);      // expands the array size
     }
 
-    valueArray[arrayIndex] = curValName;
-
-
+    valueArray[arrayIndex++] = curValName;
     curValName = "";  // empties the string
   }
 
-}
-
-void arrayExpander(String*& inputArray, int& size)
-{
-  int newSize = size + Config::DEFAULT_ARRAY_ADDITION;    // updates size of array
-
-  String* tempArray = new String[newSize];
-
-  for (int i = 0; i < size; i++)
-  {
-      tempArray[i] = inputArray[i];
-  }
-
-  delete[] inputArray;   // free old memory
-
-  inputArray = tempArray; // update caller pointer
-  size = newSize;
+  return valueArray;    // returns the array
 }
