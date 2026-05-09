@@ -18,10 +18,10 @@ class Pi
      * ensure safety, no parameters are passed through to tell the pi what to do,
      * rather this function executes pre-determined instructions.
      * 
-     * @param mixed $piCommand
+     * @param string $piCommand
      * @return array{error: string, success: bool}
      */
-    static public function _pi_command($piCommand)
+    static public function _pi_command(string $piCommand)
     {
         if (!$piCommand)
         {
@@ -37,7 +37,7 @@ class Pi
 
         $result = match($piCommand)
         {
-            piFunctions::shutdown => self::_shutdown()
+            // piFunctions::shutdown => self::_shutdown()
         };
 
         if (!$result)
@@ -48,20 +48,20 @@ class Pi
         return ['success' => true, 'response' => $result];
     }
 
-    /**
-     * Shuts down the Raspberry Pi, allows for it
-     * to be safely unplugged.
-     * @return array
-     */
-    static private function _shutdown()
-    {
-        exec('sudo /sbin/shutdown -h now', $output, $code);
+    // /**
+    //  * Shuts down the Raspberry Pi, allows for it
+    //  * to be safely unplugged.
+    //  * @return array
+    //  */
+    // static private function _shutdown()
+    // {
+    //     exec('sudo /sbin/shutdown -h now', $output, $code);
 
-        // kind of pointless, seeing as it shuts down the server... but whatever
-        return [
-            'success' => $code === 0,
-            'output' => $output,
-            'code' => $code
-        ];
-    }
+    //     // kind of pointless, seeing as it shuts down the server... but whatever
+    //     return [
+    //         'success' => $code === 0,
+    //         'output' => $output,
+    //         'code' => $code
+    //     ];
+    // }
 }

@@ -1,11 +1,7 @@
 #include <Arduino.h>
 #include "config.hpp"
 #include "errorHandler.hpp"
-#include <stdint.h>
-
-// TO-DO:
-// - Implement a hash table, not in this file but somewhere
-// - Handle error for if array is too large, do something with error handler
+#include "hashStruct.hpp"
 
 void arrayExpander(String*& inputArray, size_t& originalSize)
 {
@@ -28,34 +24,41 @@ void arrayExpander(String*& inputArray, size_t& originalSize)
 // String inputs looks roughly like so:
 
 // type=adjust&module=LED&method=power&state=1&silent=0
-String* parseCommand(const String& input)
+hashTable* parseCommand(const String& input)
 {
-  uint8_t arrayIndex = 0;
+  String currentKey;
+  String currentValue;
 
-  // heap pointers
-  size_t baseSize = Config::BASE_ARRAY_SIZE;
-  String* valueArray = new String[Config::BASE_ARRAY_SIZE];
+  hashTable* ht = new hashTable();    // creates hash table object which we will store items in
 
-  String curValName;      // string that will be appended to to form param name
+  String curValName;      // string that will be appended to either currentKey or currentValue
 
   for (size_t index = 0; index < input.length(); index++)
   {
-    if (input[index] != '&')
+    if (input[index] == '=')    // we have dealt with a key
     {
-        curValName += input[index];     // appends char to string
-        continue;
+      currentKey = curValName;
+      curValName = "";
+      continue;
     }
 
-    // & found, we now know that value of curValName is the full name of the command/param
-    
-    if (arrayIndex >= baseSize)    // array values has surpassed base amount, expand array
+    else if (input[index] == '&' && currentKey != "")   // we have dealt with value, now we have both key and value we can assign to hash table
     {
-      arrayExpander(valueArray, baseSize);
+      currentValue = curValName;
+      ht->insert(currentKey, currentValue);   // adds new entry to the hash table
+
+      curValName = currentValue = currentKey = "";   // reset all values
+      continue;
     }
 
-    valueArray[arrayIndex++] = curValName;
-    curValName = "";
+    curValName += input[index];     // appends char to string
   }
 
-  return valueArray;
+  // accounts for last value
+  if (currentKey.length() > 0 && curValName.length() > 0)
+  {
+    ht->insert(currentKey, curValName);
+  }
+
+  return ht;
 }

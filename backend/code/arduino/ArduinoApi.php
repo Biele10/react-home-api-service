@@ -41,4 +41,14 @@ Class ArduinoApi
 
         return ['success' => true, 'content' => $response];
     }
+
+    // TO-DO
+    // CREATE FUNCTION TO VALIDATE FORMAT OF DATA SENT TO ARDUINO
+    // FORMAT TO MATCH:
+    // type=adjust&module=LED&method=power&state=1&silent=0
+
+    static private function _validate_arduino_command(string $command)
+    {
+
+    }
 }

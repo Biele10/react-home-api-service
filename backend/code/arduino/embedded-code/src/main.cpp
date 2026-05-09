@@ -1,5 +1,7 @@
 #include <Arduino.h>
 #include "config.hpp"
+#include "parser.hpp"
+#include "hashStruct.hpp"
 
 bool onBoardLedState = false;   // keeps track of the state of the on board led
 bool redLedState = false;
@@ -16,6 +18,8 @@ void blinkLED()
   }
 }
 
+String input = "";
+
 void setup()
 {
   Serial.begin(9600);      // must match Python baud rate
@@ -26,41 +30,24 @@ void setup()
 // Main program loop, commands are read from serial.
 void loop()
 {
-  if (Serial.available() > 0)
-  {
-    String command = Serial.readStringUntil('\n');  // read one line
-    command.trim(); // remove whitespace / newline
+    if (Serial.available() > 0)
+    {
+        String input = Serial.readStringUntil('\n');  // read full line
 
-    if (command == "LED_ON")
-    {
-      digitalWrite(LED_BUILTIN, HIGH);
-      Serial.println("LED turned ON");
-    } 
-    else if (command == "LED_OFF")
-    {
-      digitalWrite(LED_BUILTIN, LOW);
-      Serial.println("LED turned OFF");
-    }
-    else if (command == "BLINK")
-    {
-      blinkLED();
-    }
+        hashTable* ht = parseCommand(input);
+        for (size_t i=0; i < ht->size; i++)
+        {
+          if (ht->getByIndex(i) == nullptr)
+          {
+            continue;
+          }
 
-    else if (command == "onBoardLedPower")
-    {
-      onBoardLedState = !onBoardLedState;   // flips values
-      digitalWrite(LED_BUILTIN, onBoardLedState ? HIGH : LOW);
+          Serial.print("Index: ");
+          Serial.println(i);
+          Serial.print("Key: ");
+          Serial.println(ht->getByIndex(i)->key);
+          Serial.print("Value: ");
+          Serial.println(ht->getByIndex(i)->value);
+        }
     }
-
-    else if (command == "LED")    // updates RED led
-    {
-      redLedState = !redLedState;
-      digitalWrite(redLED, redLedState ? HIGH : LOW);
-    }
-    
-    else
-    {
-      Serial.println("Unknown command: " + command);
-    }
-  }
 }
