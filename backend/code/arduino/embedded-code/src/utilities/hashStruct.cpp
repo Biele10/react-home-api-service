@@ -2,6 +2,11 @@
 #include <stdint.h>
 #include "config.hpp"
 
+// TO-DO
+// ADD DECONSTRUCTORS FOR ENTRIES AND HASHTABLE ITSELF
+// ADD INSERT FUNCTION
+// ADD GET FUNCTION
+
 class hashTable
 {
     private:
