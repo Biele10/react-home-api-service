@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include "config.hpp"
 
-class hashTable
+class HashTable
 {
     private:
 
@@ -13,7 +13,7 @@ class hashTable
             entry* nextEntry;
         };
 
-        hashTable::entry** initializeHashTable(size_t size) const;
+        entry** initializeHashTable(size_t size) const;
         entry* createEntry(const String& key, const String& value);
 
     public:
@@ -25,8 +25,9 @@ class hashTable
 
         void insert(const String& key, const String& value);
         entry* get(const String& key);
+        String getValue(const String& key);
         entry* getByIndex(const size_t index);
 
-        ~hashTable();
-        hashTable(size_t size = Config::BASE_HASH_TABLE_SIZE);
+        ~HashTable();
+        HashTable(size_t size = Config::BASE_HASH_TABLE_SIZE);
 };

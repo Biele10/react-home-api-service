@@ -5,15 +5,15 @@
 /**
  * Constructor that initializes all values.
  */
-hashTable::hashTable(size_t size) : ht(initializeHashTable(size)), size(size)
+HashTable::HashTable(size_t size) : ht(initializeHashTable(size)), size(size)
 {};
 
-hashTable::entry** hashTable::initializeHashTable(size_t size) const
+HashTable::entry** HashTable::initializeHashTable(size_t size) const
 {
     return new entry*[size]();   // safely creates fixed array and initializes all values to nullptr
 };
 
-hashTable::entry* hashTable::createEntry(const String& key, const String& value)
+HashTable::entry* HashTable::createEntry(const String& key, const String& value)
 {
     entry* e = new entry;
     e->key = key;
@@ -27,7 +27,7 @@ hashTable::entry* hashTable::createEntry(const String& key, const String& value)
  * Function that hashes the key to generate the key/values
  * place inside the hash table.
  */
-size_t hashTable::hash(const String& key) const
+size_t HashTable::hash(const String& key) const
 {
     size_t hashKey = 0;
     for (size_t i=0; i < key.length(); i++)
@@ -42,7 +42,7 @@ size_t hashTable::hash(const String& key) const
  * Deconstructor that clears up all memory being
  * used by the class.
  */
-hashTable::~hashTable()
+HashTable::~HashTable()
 {
     for (size_t i = 0; i < size; i++)
     {
@@ -59,7 +59,7 @@ hashTable::~hashTable()
     delete[] ht;
 }
 
-void hashTable::insert(const String& key, const String& value)
+void HashTable::insert(const String& key, const String& value)
 {
     entry* e = createEntry(key, value);
     const size_t hashKey = this->hash(key);
@@ -81,7 +81,7 @@ void hashTable::insert(const String& key, const String& value)
     next->nextEntry = e;     // assigns the newly created entry
 };
 
-hashTable::entry* hashTable::get(const String& key)
+HashTable::entry* HashTable::get(const String& key)
 {
     const size_t hashKey = this->hash(key);
     entry* fetchedEntry = this->ht[hashKey];
@@ -94,12 +94,23 @@ hashTable::entry* hashTable::get(const String& key)
     return fetchedEntry;        // if found, found entry returned, if not nullptr returned
 };
 
+String HashTable::getValue(const String& key)
+{
+    entry* e = HashTable::get(key);
+    if (e == nullptr)
+    {
+        return "";      // indicates that key/value-pair does not exist
+    }
+
+    return e->value;
+};
+
 /**
  * Function that gets an item from the
  * hash table by a direct index number
  * rather than using a key.
  */
-hashTable::entry* hashTable::getByIndex(const size_t index)
+HashTable::entry* HashTable::getByIndex(const size_t index)
 {
     return this->ht[index];     // if value there, entry is returned if not nullptr is
 }

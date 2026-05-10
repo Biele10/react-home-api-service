@@ -24,12 +24,12 @@ void arrayExpander(String*& inputArray, size_t& originalSize)
 // String inputs looks roughly like so:
 
 // type=adjust&module=LED&method=power&state=1&silent=0
-hashTable* parseCommand(const String& input)
+HashTable* parseCommand(const String& input)
 {
   String currentKey;
   String currentValue;
 
-  hashTable* ht = new hashTable();    // creates hash table object which we will store items in
+  HashTable* ht = new HashTable();    // creates hash table object which we will store items in
 
   String curValName;      // string that will be appended to either currentKey or currentValue
 
