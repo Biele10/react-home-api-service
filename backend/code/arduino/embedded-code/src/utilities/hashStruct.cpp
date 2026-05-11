@@ -1,6 +1,6 @@
 #include <Arduino.h>
-#include "config.hpp"
-#include "hashStruct.hpp"
+#include "config/config.hpp"
+#include "structures/HashTable.hpp"
 
 /**
  * Constructor that initializes all values.

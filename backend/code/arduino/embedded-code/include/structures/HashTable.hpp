@@ -1,6 +1,6 @@
 #pragma once
 #include <Arduino.h>
-#include "config.hpp"
+#include "config/config.hpp"
 
 class HashTable
 {

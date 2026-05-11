@@ -1,8 +1,9 @@
 #include <Arduino.h>
-#include "config.hpp"
-#include "parser.hpp"
-#include "hashStruct.hpp"
-#include "arduinoController.hpp"
+#include "config/config.hpp"
+#include "utilities/parser.hpp"
+#include "structures/HashTable.hpp"
+#include "controller/ArduinoController.hpp"
+#include "output/Result.hpp"
 
 String input = "";
 
@@ -21,6 +22,6 @@ void loop()
         HashTable* params = parseCommand(input);        // stores params passed through as a hashtable object
 
         ArduinoController ac;       // main controller that handles requests from server
-        ac.handleCommand(params);   // command sent from Python is handled
+        Result result = ac.handleCommand(params);   // command sent from Python is handled, result is stored from here
     }
 }

@@ -1,7 +1,8 @@
 #include <Arduino.h>
-#include "config.hpp"
-#include "hashStruct.hpp"
-#include "arduinoController.hpp"
+#include "config/config.hpp"
+#include "structures/HashTable.hpp"
+#include "controller/ArduinoController.hpp"
+#include "output/Result.hpp"
 
 int redLED = Config::RED_LED_PIN;
 
@@ -24,17 +25,19 @@ void ArduinoController::setupHardware()
  * Function that handles commands sent from server
  * and assigns them to the correct class and method.
  */
-void ArduinoController::handleCommand(HashTable* command_and_params)
+Result ArduinoController::handleCommand(HashTable* command_and_params)
 {
   String module = command_and_params->getValue("module");
   if (module == "")
   {
+    Result result = Result::Error(ErrorCode::INVALID_MODULE, )
     return;   // error, module has to be defined
   }
 
   HardwareClasses moduleClass = getModuleClass(module);
   if (moduleClass == HardwareClasses::NONE)
   {
+
     return;   // class doesn't exist
   }
 

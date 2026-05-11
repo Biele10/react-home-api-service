@@ -1,8 +1,7 @@
 #include <Arduino.h>
-#include "config.hpp"
-#include "errorHandler.hpp"
-#include "hashStruct.hpp"
-
+#include "config/config.hpp"
+#include "utilities/errorHandler.hpp"
+#include "structures/HashTable.hpp"
 void arrayExpander(String*& inputArray, size_t& originalSize)
 {
   size_t newSize = originalSize + Config::DEFAULT_ARRAY_ADDITION;
