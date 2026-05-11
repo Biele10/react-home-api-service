@@ -8,15 +8,15 @@ class Result
         String message;
         String data;
 
-        ErrorCode::Code errorCode;
+        uint8_t errorCode;
         String error;
 
-        Result(bool success, const String& message = "", const String& data = "", ErrorCode::Code errorCode = 0, 
+        Result(bool success, const String& message = "", const String& data = "", uint8_t errorCode = 0, 
         const String& error = "") : success(success), message(message), data(data), errorCode(errorCode), error(error) {};
 
-         static Result Ok(const String& data = "")
+         static Result Ok(const String& message = "", const String& data = "")
         {
-            return Result(true, "", data);
+            return Result(true, message, data);
         }
 
         static Result Error(ErrorCode::Code code, const String& errorMsg)

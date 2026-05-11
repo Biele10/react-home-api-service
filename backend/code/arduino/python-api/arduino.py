@@ -5,6 +5,10 @@ import json
 
 app = Flask(__name__)
 
+
+# TO-DO
+# UPDATE REQUEST TO SEND COMMAND AS A STRING
+
 # ---- SERIAL SETUP ----
 STATIC_SERIAL_PORT = "/dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_145313035343517071D1-if00"        # file name for arduino when plugged into raspberry pi
 # SERIAL_PORT = "COM5"    # when testing locally
@@ -53,7 +57,7 @@ def send_command():
         return jsonify({"error": "arduino not connected"}), 500
 
 # API endpoint for PHP to send data to the arduino.
-@app.route("/send", methods=["POST"])
+@app.route("/send", methods=["GET"])
 def send():
     data = request.get_json()
 

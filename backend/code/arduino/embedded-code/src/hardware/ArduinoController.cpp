@@ -4,12 +4,12 @@
 #include "controller/ArduinoController.hpp"
 #include "output/Result.hpp"
 
-int redLED = Config::RED_LED_PIN;
+int redLedPin = Config::RED_LED_PIN;
 
 /**
  * Constructor
  */
-ArduinoController::ArduinoController(){};
+ArduinoController::ArduinoController(int redLedPin) : redLed(redLedPin) {}   // initialises all hardware being used and creates an object for each one
 
 /**
  * Ran in setup function, sets up
@@ -17,8 +17,7 @@ ArduinoController::ArduinoController(){};
  */
 void ArduinoController::setupHardware()
 {
-  pinMode(LED_BUILTIN, OUTPUT);
-  pinMode(redLED, OUTPUT);   // sets up red LED
+  pinMode(redLedPin, OUTPUT);   // sets up red LED
 };
 
 /**
@@ -27,31 +26,11 @@ void ArduinoController::setupHardware()
  */
 Result ArduinoController::handleCommand(HashTable* command_and_params)
 {
-  String module = command_and_params->getValue("module");
-  if (module == "")
+  String module = command_and_params->getValue("module");   // fetches module to interact with
+  if (module == "redLed")
   {
-    Result result = Result::Error(ErrorCode::INVALID_MODULE, )
-    return;   // error, module has to be defined
+    return redLed.handler(command_and_params);
   }
 
-  HardwareClasses moduleClass = getModuleClass(module);
-  if (moduleClass == HardwareClasses::NONE)
-  {
-
-    return;   // class doesn't exist
-  }
-
-};
-
-/**
- * Gets class by module string.
- */
-HardwareClasses ArduinoController::getModuleClass(String& moduleString)
-{
-  if (moduleString == "led")
-  {
-    return HardwareClasses::Led;
-  }
-
-  return HardwareClasses::NONE;   // no matching class found
+  return Result::Error(ErrorCode::MODULE_NOT_EXIST, "Module does not exist.");
 };

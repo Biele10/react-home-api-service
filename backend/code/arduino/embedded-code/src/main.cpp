@@ -6,11 +6,12 @@
 #include "output/Result.hpp"
 
 String input = "";
+ArduinoController ac = ArduinoController(Config::RED_LED_PIN);       // main controller that handles requests from server
 
 void setup()
 {
   Serial.begin(9600);      // must match Python baud rate
-  ArduinoController::setupHardware();
+  ac.setupHardware();
 }
 
 // Main program loop, commands are read from serial.
@@ -21,7 +22,6 @@ void loop()
         String input = Serial.readStringUntil('\n');    // read full line
         HashTable* params = parseCommand(input);        // stores params passed through as a hashtable object
 
-        ArduinoController ac;       // main controller that handles requests from server
         Result result = ac.handleCommand(params);   // command sent from Python is handled, result is stored from here
     }
 }

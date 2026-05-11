@@ -11,12 +11,13 @@ namespace Config
 
 namespace ErrorCode
 {
-    enum class Code : uint8_t
+    enum Code : uint8_t
     {
         NONE = 0,
         INVALID_MODULE = 1,
-        INVALID_COMMAND = 2,
-        INVALID_PIN = 3,
-        HARDWARE_FAILURE = 4
+        MODULE_NOT_EXIST = 2,
+        INVALID_COMMAND = 3,
+        INVALID_PIN = 4,
+        HARDWARE_FAILURE = 5
     };
 }
