@@ -16,17 +16,20 @@ register_shutdown_function([ErrorHandler::class, '_handleFatal']);
 
 // This file handles the proper backend logic, the api in the frontend passes the information here
 
+if (empty($_GET['request_type']))
+{
+    echo json_encode(["success" => false, "error" => "Request type was empty."]);
+    exit;
+}
+
 // handling a simple command to send to the arduino
 if (!empty($_GET['request_type']) && $_GET['request_type'] === 'command')
 {
-    if (empty($_GET['command']))
-    {
-        echo json_encode(['success' => false, 'error' => 'No command was attached to send.']);
-    }
-    
-    $command = $_GET['command'];
+    $params = $_GET;
+    unset($params['request_type']);
 
-    $result = Hardware::_command($command);
+    $queryString = http_build_query($params);
+    $result = Hardware::_command($queryString);
     echo json_encode($result);
     exit;
 }

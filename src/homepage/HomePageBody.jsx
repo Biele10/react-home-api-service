@@ -44,7 +44,7 @@ function LedButton()
 
 function RedLedButton()
 {
-  get('command', 'LED');
+  get('command', 'redLed', 'power');
 }
 
 function Shutdown()

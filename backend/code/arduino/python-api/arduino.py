@@ -5,12 +5,8 @@ import json
 
 app = Flask(__name__)
 
-
-# TO-DO
-# UPDATE REQUEST TO SEND COMMAND AS A STRING
-
 # ---- SERIAL SETUP ----
-STATIC_SERIAL_PORT = "/dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_145313035343517071D1-if00"        # file name for arduino when plugged into raspberry pi
+STATIC_SERIAL_PORT = "/dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_145313035343517071D1-if00"
 # SERIAL_PORT = "COM5"    # when testing locally
 BAUD_RATE = 9600
 
@@ -22,24 +18,20 @@ except Exception as e:
     print("Failed to connect to Arduino:", e)
     arduino = None
 
+
 # Function that sends data to Arduino.
-def send_to_arduino(request_type, message, params=None):
+def send_to_arduino(command):
     if arduino and arduino.is_open:
 
-        # stores like a json object
-        payload = {
-            "type": request_type,
-            "command": message,
-            "params": params or {}
-        }
+        # send raw string directly (what you actually want)
+        arduino.write((command + "\n").encode("utf-8"))
 
-        command = (json.dumps(payload) + "\n").encode("utf-8")
-        arduino.write(command)
-        print("Sent:", message)
+        print("Sent:", command)
         return True
     return False
 
-# Function that handles basic commands to send to the arduino.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+
+# Function that handles basic commands to send to the arduino.
 def send_command():
     command = request.args.get('command')
 
@@ -49,28 +41,29 @@ def send_command():
     requestType = 'command'     # tells the arduino that the given input is a simple command,
                                 # bound to a particular function
 
-    success = send_to_arduino(requestType, command)     # simple command, no params needed
+    success = send_to_arduino(command)     # simple command, no params needed
 
     if success:
         return jsonify({'status': "sent", "command": command}), 200
     else:
         return jsonify({"error": "arduino not connected"}), 500
 
+
 # API endpoint for PHP to send data to the arduino.
 @app.route("/send", methods=["GET"])
 def send():
-    data = request.get_json()
+    command = request.query_string.decode()
 
-    if not data or "command" not in data:
+    if not command:
         return jsonify({"error": "missing command"}), 400
 
-    command = data["command"]
     success = send_to_arduino(command)
 
     if success:
         return jsonify({"status": "sent", "command": command})
     else:
         return jsonify({"error": "arduino not connected"}), 500
+
 
 # Main Program Loop
 if __name__ == "__main__":
