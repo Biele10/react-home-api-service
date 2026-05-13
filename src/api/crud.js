@@ -30,7 +30,6 @@ async function get(request_type, module, method, params = null)
         }
 
         const result = await response.json();
-        alert(result);
     }
     
     catch (error)

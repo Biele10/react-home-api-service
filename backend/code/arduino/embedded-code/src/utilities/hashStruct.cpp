@@ -75,6 +75,12 @@ void HashTable::insert(const String& key, const String& value)
     entry* next = this->ht[hashKey];
     while(next->nextEntry != nullptr)
     {
+        if (next->key == key)
+        {
+            next->value = value;        // if keys match, value is just overwritten
+            return;
+        }
+
         next = next->nextEntry;
     }
 
