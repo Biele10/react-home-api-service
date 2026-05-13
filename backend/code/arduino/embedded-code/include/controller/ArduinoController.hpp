@@ -3,6 +3,7 @@
 #include "structures/HashTable.hpp"
 #include "output/Result.hpp"
 #include "hardware-components/Led.hpp"
+#include "hardware-components/OnboardLed.hpp"
 
 class ArduinoController
 {
@@ -12,4 +13,5 @@ class ArduinoController
         ArduinoController(int redLedPin);
     private:
         Led redLed;
+        OnboardLed onboardLed;
 };

@@ -5,8 +5,8 @@ function HomePageBody() {
   return (
     <div>
           <Button
-            text="On Board LED"
-            onClickReference={LedButton}
+            text="Onboard LED"
+            onClickReference={OnboardLedButton}
             style=
             {{
                 minHeight: '100%',
@@ -23,33 +23,18 @@ function HomePageBody() {
                 margin: '0 0 15px 0'
             }}
           />
-
-          <Button
-            text="Shutdown"
-            onClickReference={Shutdown}
-            style=
-            {{
-                minHeight: '100%',
-                margin: '0 0 15px 0'
-            }}
-          />
     </div>
   );
 }
 
-function LedButton()
+function OnboardLedButton()
 {
-  get('command', 'onBoardLedPower');
+  get('command', 'onboardLed', 'power');
 }
 
 function RedLedButton()
 {
   get('command', 'redLed', 'power');
-}
-
-function Shutdown()
-{
-  get('command', 'shutdown');
 }
 
 export default HomePageBody;

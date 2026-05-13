@@ -9,7 +9,7 @@ int redLedPin = Config::RED_LED_PIN;
 /**
  * Constructor
  */
-ArduinoController::ArduinoController(int redLedPin) : redLed(redLedPin) {}   // initialises all hardware being used and creates an object for each one
+ArduinoController::ArduinoController(int redLedPin) : redLed(redLedPin), onboardLed() {}   // initialises all hardware being used and creates an object for each one
 
 /**
  * Ran in setup function, sets up
@@ -17,6 +17,7 @@ ArduinoController::ArduinoController(int redLedPin) : redLed(redLedPin) {}   // 
  */
 void ArduinoController::setupHardware()
 {
+  pinMode(LED_BUILTIN, OUTPUT);
   pinMode(redLedPin, OUTPUT);   // sets up red LED
 };
 
@@ -30,6 +31,11 @@ Result ArduinoController::handleCommand(HashTable* command_and_params)
   if (module == "redLed")
   {
     return redLed.handler(command_and_params);
+  }
+
+  if (module == "onboardLed")
+  {
+    return onboardLed.handler(command_and_params);
   }
 
   return Result::Error(ErrorCode::MODULE_NOT_EXIST, "Module does not exist.");
