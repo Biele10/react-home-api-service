@@ -1,70 +1,34 @@
-# Getting Started with Create React App
+# HomeAPI Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project incorporates web development and embedded engineering in order to build a website which will allow for people at home to interact with hardware.
+The server is run on a Raspberry Pi, this is connected to an Arduino UNO R3 which is connected to a breadboard with hardware attached.
 
-## Available Scripts
+# Frontend
 
-In the project directory, you can run:
+This is built using ReactJS, I have created multiple classes which can later be reused, however for now the website is just one static page.
+All React code is in the [src](./src/) folder.
 
-### `npm start`
+# Backend
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+This is built using raw PHP which is comprised of a variety of classes which relate to different pieces of hardware which will store the related methods.
+All PHP code is stored in the [code](./backend/code/) folder.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+In order to send data to the Arduino, PHP receives the requests from the JavaScript frontend and passes them to a Python flask server which is also being
+run on the Pi, the code for the Python is stored in [arduino.py](./backend/code/arduino/python-api/arduino.py).
 
-### `npm test`
+Python has its own serial library which allows for direct communication with the arduino, allowing for PHP requests to be sent to Python and then passed directly
+to the Arduino.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# Embedded Code
 
-### `npm run build`
+This is built using C++, the code for this is stored in the [embedded-code](./backend/code/arduino/embedded-code/) folder.
+I have created my own custom [hash table](./backend/code/arduino/embedded-code/src/utilities/HashStruct.cpp) structure which is used to store multiple parameters 
+in an array-like structure with O(1) lookups, improving efficiency.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+I have also created a custom parameter [parser](./backend/code/arduino/embedded-code/src/utilities/parser.cpp) that takes inputs from Python and parses them and stores 
+them correctly in the hash table. 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Commands are expected to be passed in this format:  module=Led&method=power. The parser seperate key and value by the = and determines the next key by &.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The main program flow is all handled via the [ArduinoController](./backend/code/arduino/embedded-code/src/hardware/ArduinoController.cpp) class which correclty sends
+data to the right modules.
