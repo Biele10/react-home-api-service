@@ -5,7 +5,7 @@ import Container from "../ux/Container";
 function HomePage()
 {
     return(
-        <div>
+        <div>   
         <HomePageHeader/>
         <Container style = 
         {{

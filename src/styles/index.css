@@ -22,15 +22,14 @@ body
 
 .child_page
 {
-    width: 40%;
-    min-width: 40%;
+    width: clamp(320px, 50vw, 700px);
+
     padding: 20px;
     margin-top: 50px;
 
     background: white;
     border-radius: 12px;
-    border-style:solid;
-    border-color: black;
+    border: solid black;
 
     display: flex;
     flex-direction: column;
@@ -49,8 +48,14 @@ button {
   transition: all 250ms ease;
 }
 
-button:hover {
-  background-color: #57C785;
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+@media (hover: hover) {
+  button:hover {
+    background-color: #57C785;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  }
+}
+
+button:active {
+  transform: scale(0.98);
 }

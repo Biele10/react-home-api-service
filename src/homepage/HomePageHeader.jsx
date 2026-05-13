@@ -6,8 +6,10 @@ function HomePageHeader()
         <Header
         text="HomeAPI"
         style={
-            {marginTop: '10vh',
-            minWidth: '50%'}
+            {
+                minWidth: '50%',
+                margin: '10% 0 0 0'
+            }
         }/>
     )
 }

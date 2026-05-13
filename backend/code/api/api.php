@@ -23,19 +23,20 @@ if (empty($_GET['request_type']))
 }
 
 // handling a simple command to send to the arduino
-if (!empty($_GET['request_type']) && $_GET['request_type'] === 'command')
+if (($_GET['request_type'] ?? null) === 'command')
 {
     $params = $_GET;
     unset($params['request_type']);
 
     $queryString = http_build_query($params);
     $result = Hardware::_command($queryString);
+
     echo json_encode($result);
     exit;
 }
 
 // handles requests that are intended to interact with the raspberry pi
-if ($_GET['request_type'] === 'pi_command')
+if (($_GET['request_type'] ?? null) === 'pi_command')
 {
     if (empty($_GET['command']))
     {
