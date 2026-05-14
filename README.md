@@ -8,6 +8,9 @@ The server is run on a Raspberry Pi, this is connected to an Arduino UNO R3 whic
 This is built using ReactJS, I have created multiple classes which can later be reused, however for now the website is just one static page.
 All React code is in the [src](./src/) folder.
 
+The [crud.js](./src/api/crud.js) file is what takes inputs from the frontend and then sends to the backend, this is the frontend handler for sending
+and receiving information from the backend.
+
 # Backend
 
 This is built using raw PHP which is comprised of a variety of classes which relate to different pieces of hardware which will store the related methods.
