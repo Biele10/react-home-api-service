@@ -35,3 +35,5 @@ Commands are expected to be passed in this format:  module=Led&method=power. The
 
 The main program flow is all handled via the [ArduinoController](./backend/code/arduino/embedded-code/src/hardware/ArduinoController.cpp) class which correclty sends
 data to the right modules.
+
+As of right now the Arduino is linked to two pieces of hardware, a red LED and the onboard LED. In the next version I plan to introduce an ultrasonic sensor.
