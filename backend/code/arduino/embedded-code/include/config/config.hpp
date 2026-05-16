@@ -4,6 +4,9 @@
 namespace Config
 {
     constexpr int RED_LED_PIN = 11;
+    constexpr int GREEN_LED_PIN = 3;
+    constexpr int US_TRIG_PIN = 9;
+    constexpr int US_ECHO_PIN = 10;
     constexpr size_t BASE_ARRAY_SIZE = 10;
     constexpr size_t DEFAULT_ARRAY_ADDITION = 5;       // default amount to increase an array size by
     constexpr size_t BASE_HASH_TABLE_SIZE = 10;
