@@ -28,19 +28,15 @@ void loop()
         Result result = ac.handleCommand(params);   // command sent from Python is handled, result is stored from here
     }
 
-    if ((millis() - ac.ultrasonicSensor.lastRead) >= 300)      // check the ultrasonic sensor every 03 seconds
+    size_t movementCheck = ac.ultrasonicSensor.movementCheck(Config::APPROX_DOOR_DISTANCE);
+
+    if (movementCheck == MOVEMENT)      // check the ultrasonic sensor every 03 seconds
     {
-        ac.ultrasonicSensor.lastRead = millis();
+        ac.greenLed.on();
+    }
 
-        size_t dist = ac.ultrasonicSensor.getDistance();
-        if (dist < 200)
-        {
-            ac.greenLed.on();
-        }
-
-        else
-        {
-            ac.greenLed.off();
-        }
+    else if (movementCheck == NO_MOVEMENT)
+    {
+        ac.greenLed.off();
     }
 }
