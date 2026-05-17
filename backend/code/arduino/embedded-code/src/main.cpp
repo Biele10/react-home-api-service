@@ -28,7 +28,7 @@ void loop()
         Result result = ac.handleCommand(params);   // command sent from Python is handled, result is stored from here
     }
 
-    if ((millis() - ac.ultrasonicSensor.lastRead) >= 500)      // check is done every 0.5 seconds
+    if ((millis() - ac.ultrasonicSensor.lastRead) >= 300)      // check the ultrasonic sensor every 03 seconds
     {
         ac.ultrasonicSensor.lastRead = millis();
 

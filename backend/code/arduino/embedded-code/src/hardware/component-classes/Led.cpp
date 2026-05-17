@@ -42,7 +42,7 @@ Result Led::power()
 }
 
 // The on and off functions are used internally for specific behaviour
-// as current state of the LED can easily be tracked
+// as current state of the LED can easily be tracked.
 
 /**
  * Turns LED on.
