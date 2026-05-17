@@ -7,7 +7,9 @@ class Led
     public:
         Led(int pinNumber, bool initialState = false);
         Result handler(HashTable* command_and_params);       // function that handles what to do with user input
-        Result power(HashTable* command_and_params);
+        Result power();
+        Result on();
+        Result off();
 
     private:
         int pin;
