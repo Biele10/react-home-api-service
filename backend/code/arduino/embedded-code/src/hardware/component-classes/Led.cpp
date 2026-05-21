@@ -12,9 +12,9 @@ Led::Led(int pinNumber, bool initialState) : pin(pinNumber), state(initialState)
 Result Led::handler(HashTable* command_and_params)
 {
     String method = command_and_params->getValue("method");
-    if (method == "on")
+    if (method == "power")
     {
-        return this->on();
+        return this->power();
     }
 
     return Result::Error(ErrorCode::INVALID_COMMAND, "No such method found.");
