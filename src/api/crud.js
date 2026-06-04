@@ -19,7 +19,7 @@ async function get(request_type, module, method, params = null)
     }
 
     const queryString = query.toString();
-    const api_url = config.api_path + '?' + queryString;
+    const api_url = config.api_path_dev + '?' + queryString;
 
     try
     {
