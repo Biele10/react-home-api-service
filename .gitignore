@@ -7,9 +7,16 @@
 
 # testing
 /coverage
+/backend/index.php
 
 # production
 /build
+
+#docker
+build-production.sh
+docker-compose.yml
+Dockerfile.prod
+start-dev.sh
 
 # misc
 .DS_Store
@@ -22,6 +29,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-#github
+#configs
 /backend/vendor/
 /backend/code/config/
