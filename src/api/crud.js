@@ -19,7 +19,7 @@ async function get(request_type, module, method, params = null)
     }
 
     const queryString = query.toString();
-    const api_url = config.api_path_dev + '?' + queryString;
+    const api_url = config.api_path + '?' + queryString;
 
     try
     {
@@ -30,6 +30,7 @@ async function get(request_type, module, method, params = null)
         }
 
         const result = await response.json();
+        return result;
     }
     
     catch (error)
