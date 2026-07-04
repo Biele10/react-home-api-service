@@ -1,13 +1,8 @@
 <?php
 
 namespace App\hardware;
-use App\arduino\ArduinoApi;
-// This is where all hardware related requests are sent to then use the correct class
 
-Class Hardware
+abstract Class Hardware
 {
-    static public function _command(string $commandToSend)
-    {
-       return ArduinoApi::_get($commandToSend);
-    }
+    // we might need this?
 }

@@ -7,6 +7,10 @@ namespace App\hardware;
  */
 Class ShellySwitch
 {
-    public function __construct(int $pinNumber)
-    {}
+    static public function _adjustLight(string $lightPercentage)
+    {
+        echo json_encode("WE HAVE OUR LIGHT VALUE " . $lightPercentage);exit;
+        // TO-DO
+        // WRITE CODE TO MAKE API REQUEST TO SHELLY DIMMER
+    }
 }

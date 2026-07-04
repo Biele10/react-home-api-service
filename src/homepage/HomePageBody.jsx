@@ -48,8 +48,10 @@ function RedLedButton()
 
 function AdjustLighting(e)
 {
-  const value = Number(e.target.value);
-  console.log("do something with this value for API ", value)
+  const lightValue = Number(e.target.value);
+  const params = {light_percentage: lightValue, somethingElse: "hello"};
+  var res = get('pi_command', 'shelly', 'adjustLight', params);
+  alert(res); // temp
 }
 
 export default HomePageBody;
