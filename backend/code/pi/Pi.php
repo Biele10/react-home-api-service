@@ -5,30 +5,31 @@ use Throwable;
 
 // This is the file used for scripts to interact directly with the Pi.
 
-// used to determine which function to 
+// used to determine which module to interact with
 enum piFunctions: string
 {
     case shutdown = 'shutdown';
+    case shelly = 'shelly';
 }
 
 class Pi
 {
     /**
-     * Handles all functions in relation to the raspberry pi, to
-     * ensure safety, no parameters are passed through to tell the pi what to do,
-     * rather this function executes pre-determined instructions.
+     * Handles all functions in relation to the raspberry pi.
      * 
-     * @param string $piCommand
+     * @param string $module - Defines the class the code will interact with
+     * @param string $method - The method that will be executed within the class
+     * @param array $params - The parameters passed in to interact with the Pi (module, method etc)
      * @return array{error: string, success: bool}
      */
-    static public function _pi_command(string $piCommand)
+    static public function _pi_command(string $module, string $method, array $params = [])
     {
-        if (!$piCommand)
+        if (!$module)
         {
             return ['success' => false, 'error' => "Pi command was not set."];
         }
 
-        $piCommand = piFunctions::tryFrom($piCommand);
+        $piCommand = piFunctions::tryFrom($module);
 
         if (!$piCommand)
         {
@@ -37,7 +38,9 @@ class Pi
 
         $result = match($piCommand)
         {
-            // piFunctions::shutdown => self::_shutdown()
+            // TO-DO
+            // RESEARCH BEST WAY TO NAVIGATE TO MODULE METHODS
+            piFunctions::shelly => \App\hardware\ShellySwitch::_adjustLight($params['light_percentage'])
         };
 
         if (!$result)
