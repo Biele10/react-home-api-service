@@ -32,7 +32,7 @@ function Slider({style = {}, onSlideReference = null}) {
 
     return (
       <div style={mergedStyles}>
-        <input onMouseUp={onSlideReference} type="range" min="1" max="100" defaultValue="50"></input>
+        <input onChange={onSlideReference} type="range" min="1" max="100" defaultValue="50"></input>
       </div>
     );
 }
