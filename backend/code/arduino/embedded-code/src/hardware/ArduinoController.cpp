@@ -33,7 +33,7 @@ Result ArduinoController::handleCommand(HashTable* command_and_params)
     return redLed.handler(command_and_params);
   }
 
-  if (module == "onboardLed")
+  if (module == "onBoardLed")
   {
     return onboardLed.handler(command_and_params);
   }

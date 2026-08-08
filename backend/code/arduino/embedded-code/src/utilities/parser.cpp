@@ -2,6 +2,7 @@
 #include "config/config.hpp"
 #include "utilities/errorHandler.hpp"
 #include "structures/HashTable.hpp"
+
 void arrayExpander(String*& inputArray, size_t& originalSize)
 {
   size_t newSize = originalSize + Config::DEFAULT_ARRAY_ADDITION;
@@ -34,14 +35,14 @@ HashTable* parseCommand(const String& input)
 
   for (size_t index = 0; index < input.length(); index++)
   {
-    if (input[index] == '=')    // we have dealt with a key
+    if (input[index] == Config::PARSER_VALUE_ASSIGNATION)    // we have dealt with a key
     {
       currentKey = curValName;
       curValName = "";
       continue;
     }
 
-    else if (input[index] == '&' && currentKey != "")   // we have dealt with value, now we have both key and value we can assign to hash table
+    else if (input[index] == Config::PARSER_SEPARATOR && currentKey != "")   // we have dealt with value, now we have both key and value we can assign to hash table
     {
       currentValue = curValName;
       ht->insert(currentKey, currentValue);   // adds new entry to the hash table

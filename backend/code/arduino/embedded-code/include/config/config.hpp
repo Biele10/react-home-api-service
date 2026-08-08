@@ -11,6 +11,8 @@ namespace Config
     constexpr size_t DEFAULT_ARRAY_ADDITION = 5;       // default amount to increase an array size by
     constexpr size_t BASE_HASH_TABLE_SIZE = 10;
     constexpr size_t APPROX_DOOR_DISTANCE = 240;
+    const char PARSER_SEPARATOR = '&';      // symbol that parser looks for when separating values
+    const char PARSER_VALUE_ASSIGNATION = '=';    // symbol that parser uses to determine next sequence of chars is the value to assign to previous key
 }
 
 namespace ErrorCode

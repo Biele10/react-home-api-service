@@ -4,7 +4,7 @@ namespace App\arduino;
 /**
  * This class contains static functions which send requests to the Python flask server which interacts with the arduino.
  */
-Class ArduinoApi
+final Class ArduinoApi
 {
     /**
      * Sends GET requests to the flask server, typically used for single-lined

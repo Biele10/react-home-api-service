@@ -38,7 +38,7 @@ Result Led::power()
     }
 
     this->state = !(this->state);
-    return Result::Ok("Changed state of the LED");
+    return Result::Success("Changed state of the LED");
 }
 
 // The on and off functions are used internally for specific behaviour
@@ -55,7 +55,7 @@ Result Led::on()
     }
 
     this->state = !(this->state);
-    return Result::Ok("Turned LED on.");
+    return Result::Success("Turned LED on.");
 }
 
 /**
@@ -69,5 +69,5 @@ Result Led::off()
     }
 
     this->state = !(this->state);
-    return Result::Ok("Turned LED off.");
+    return Result::Success("Turned LED off.");
 }

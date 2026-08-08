@@ -34,5 +34,5 @@ Result OnboardLed::power(HashTable* command_and_params)
     }
 
     this->state = !(this->state);
-    return Result::Ok("Changed state of onboard LED.");
+    return Result::Success("Changed state of onboard LED.");
 }

@@ -3,5 +3,8 @@
         "psr-4": {
             "App\\": "code/"
         }
+    },
+    "require": {
+        "nikic/fast-route": "^1.3"
     }
 }

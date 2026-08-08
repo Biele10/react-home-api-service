@@ -1,43 +1,62 @@
 import config from './../config.json' with { type: 'json' };
 
-// Contains all functions that link to the 
-
-async function get(request_type, module, method, params = null)
+async function request(path, method = "GET", body = null, params = null)
 {
-    const query = new URLSearchParams({
-        request_type,
-        module,
-        method
-    });
+    let api_url = config.api_path + path;
 
     if (params !== null)
     {
-        for (const [key, value] of Object.entries(params))
-        {
-            query.append(key, value);
-        }
+        const query = new URLSearchParams(params);
+        api_url += '?' + query.toString();
     }
 
-    const queryString = query.toString();
-    const api_url = config.api_path + '?' + queryString;
+    const options = {
+        method,
+        headers: {
+            "Content-Type": "application/json"
+        }
+    };
+
+    if (body !== null)
+    {
+        options.body = JSON.stringify(body);
+    }
 
     try
     {
-        const response = await fetch(api_url);
+        const response = await fetch(api_url, options);
         if (!response.ok)
         {
             throw new Error(`Response status: ${response.status}`);
         }
 
-        const result = await response.json();
-        return result;
+        return await response.json();
     }
-    
-    catch (error)
+    catch(error)
     {
         console.error(error.message);
+        throw error;
     }
-
 }
 
-export default get;
+function get(path, params = null)
+{
+    return request(path, "GET", null, params);
+}
+
+function post(path, body = null)
+{
+    return request(path, "POST", body);
+}
+
+function put(path, body = null)
+{
+    return request(path, "PUT", body);
+}
+
+function del(path, body = null)
+{
+    return request(path, "DELETE", body);
+}
+
+export { get, post, put, del };
