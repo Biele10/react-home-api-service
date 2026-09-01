@@ -1,9 +1,9 @@
 <?php
 
-namespace App\service;
+namespace Samaritan\service;
 
 // this will deal with authentication/middleware stuff
-Class ApiService extends \App\services\Service
+Class ApiService extends \Samaritan\services\Service
 {
 
 }

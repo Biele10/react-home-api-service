@@ -1,12 +1,12 @@
 <?php
 
-namespace App\services\hardware\led;
+namespace Samaritan\services\hardware\led;
 
-Class OnBoardLedService extends \App\services\hardware\HardwareService
+Class OnBoardLedService extends \Samaritan\services\hardware\HardwareService
 {
     public function power() : array
     {
-        $command = 'module=onBoardLed&method=power';
+        $command = \Samaritan\arduino\Commands::ONBOARD_LED_POWER;
         $result = $this->sendCommand($command);
 
         if ($result['success'] !== true)

@@ -1,42 +1,42 @@
 #include <Arduino.h>
 #include "config/config.hpp"
-#include "HCSR04.h"
+// #include "HCSR04.h"
 #include "utilities/parser.hpp"
-#include "structures/HashTable.hpp"
 #include "controller/ArduinoController.hpp"
-#include "hardware-components/UltrasonicSensor.hpp"
+// #include "hardware-components/UltrasonicSensor.hpp"
 #include "output/Result.hpp"
+#include "structures/CommandDispatcher.hpp"
+#include "packet/Packet.hpp"
 
-UltrasonicSensor us = UltrasonicSensor(Config::US_TRIG_PIN, Config::US_ECHO_PIN);    // sets up ultrasonic sensor
-ArduinoController ac = ArduinoController(Config::RED_LED_PIN, Config::GREEN_LED_PIN, us);       // main controller that handles requests from server
+// used to read bytes from serial
+uint8_t buffer[BUFFER_SIZE];
+uint16_t bufferIndex = 0;
+bool packetStarted = false;
 
+ArduinoController ac(Config::RED_LED_PIN);
+CommandDispatcher dispatcher;
 
 void setup()
 {
-  Serial.begin(9600);      // must match Python baud rate
-  ac.setupHardware();
+  ac.setupHardware(); // configures all connected hardware
+  dispatcher.setup(ac); // loads all endpoints into dispatch table
+  Serial.begin(9600);
 }
 
-// Main program loop, commands are read from serial.
+// Main program loop, packet bytes are read from serial.
 void loop()
 {
-    if (Serial.available() > 0)
+  if (Serial.available() > 0)
+  {
+    uint8_t byte = Serial.read();
+    if(processByte(byte, buffer, bufferIndex, packetStarted)) // returns true once whole packet is complete
     {
-        String input = Serial.readStringUntil('\n');    // read full line
-        HashTable* params = parseCommand(input);        // stores params passed through as a hashtable object
-
-        Result result = ac.handleCommand(params);   // command sent from Python is handled, result is stored from here
+      ParsedPacket* parsedPacket = parsePacket(buffer);
+      if (parsedPacket != nullptr)
+      {
+        Result result = dispatcher.dispatch(parsedPacket);
+        cleanUp(parsedPacket); // frees up memory
+      }
     }
-
-    size_t movementCheck = ac.ultrasonicSensor.movementCheck(Config::APPROX_DOOR_DISTANCE);
-
-    if (movementCheck == MOVEMENT)      // check the ultrasonic sensor every 03 seconds
-    {
-        ac.greenLed.on();
-    }
-
-    else if (movementCheck == NO_MOVEMENT)
-    {
-        ac.greenLed.off();
-    }
+  }
 }

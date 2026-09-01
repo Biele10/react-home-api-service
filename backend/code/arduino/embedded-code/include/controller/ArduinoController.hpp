@@ -6,15 +6,19 @@
 #include "hardware-components/OnboardLed.hpp"
 #include "hardware-components/UltrasonicSensor.hpp"
 
+
+// When hardware is added, it MUST be configured here, this class instantiates all hardware classes for use throughout the program
+// Adjust setupHardware function each time this is done and add getter methods to get objects from the class
+
 class ArduinoController
 {
     public:
         void setupHardware();
-        Result handleCommand(HashTable* command_and_params);
-        ArduinoController(int redLedPin, int greenLedPin, UltrasonicSensor& us);
-        
+        ArduinoController(int redLedPin);
+        Led& getRedLed();
+        OnboardLed& getOnBoardLed();
+    
+    private:
         Led redLed;
-        Led greenLed;
         OnboardLed onboardLed;
-        UltrasonicSensor& ultrasonicSensor;
 };

@@ -8,7 +8,7 @@
 /**
  * Constructor
  */
-ArduinoController::ArduinoController(int redLedPin, int greenLedPin, UltrasonicSensor& us) : redLed(redLedPin), greenLed(greenLedPin), onboardLed(), ultrasonicSensor(us) {}   // initialises all hardware being used and creates an object for each one
+ArduinoController::ArduinoController(int redLedPin) : redLed(redLedPin), onboardLed() {}   // initialises all hardware being used and creates an object for each one
 
 /**
  * Ran in setup function, sets up
@@ -16,27 +16,16 @@ ArduinoController::ArduinoController(int redLedPin, int greenLedPin, UltrasonicS
  */
 void ArduinoController::setupHardware()
 {
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT); //onboard LED
   pinMode(Config::RED_LED_PIN, OUTPUT);
-  pinMode(Config::GREEN_LED_PIN, OUTPUT);
-};
+}
 
-/**
- * Function that handles commands sent from server
- * and assigns them to the correct class and method.
- */
-Result ArduinoController::handleCommand(HashTable* command_and_params)
+Led& ArduinoController::getRedLed()
 {
-  String module = command_and_params->getValue("module");   // fetches module to interact with
-  if (module == "redLed")
-  {
-    return redLed.handler(command_and_params);
-  }
+  return this->redLed;
+}
 
-  if (module == "onBoardLed")
-  {
-    return onboardLed.handler(command_and_params);
-  }
-
-  return Result::Error(ErrorCode::MODULE_NOT_EXIST, "Module does not exist.");
-};
+OnboardLed& ArduinoController::getOnBoardLed()
+{
+  return this->onboardLed;
+}

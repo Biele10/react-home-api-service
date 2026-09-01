@@ -8,16 +8,6 @@
 UltrasonicSensor::UltrasonicSensor(int trigPin, int echoPin) : us(trigPin, echoPin), lastRead(0) {};
 
 /**
- * Handles all functions in relation to the ultrasonic sensor.
- */
-Result UltrasonicSensor::handler(HashTable* command_and_params)
-{
-    String method = command_and_params->getValue("method");
-
-    return Result::Error(ErrorCode::INVALID_COMMAND, "No such method found.");
-}
-
-/**
  * Function that returns the distance of the echo
  * in centimetres.
  */

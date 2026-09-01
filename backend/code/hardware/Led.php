@@ -1,5 +1,5 @@
 <?php
-namespace App\hardware;
+namespace Samaritan\hardware;
 
 // This file handles any functionality in relation to LEDs.
 

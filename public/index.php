@@ -18,11 +18,11 @@ $routeInfo = $dispatcher->dispatch(
 
 switch ($routeInfo[0]) {
     case FastRoute\Dispatcher::NOT_FOUND:
-        $response = new \App\resources\Response('0', 404, ['error' => 'Route not found']);
+        $response = new \Samaritan\resources\Response('0', 404, ['error' => 'Route not found']);
         break;
 
     case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-        $response = new \App\resources\Response('0', 405, ['error' => 'Method not allowed']);
+        $response = new \Samaritan\resources\Response('0', 405, ['error' => 'Method not allowed']);
         break;
 
     case FastRoute\Dispatcher::FOUND:
@@ -33,7 +33,7 @@ try
 {
 
 
-        /** @var \App\resources\Response $response */
+        /** @var \Samaritan\resources\Response $response */
         $response = $object->$method();
 }
 catch (Throwable $e)

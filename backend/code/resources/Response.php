@@ -1,6 +1,6 @@
 <?php
 
-namespace App\resources;
+namespace Samaritan\resources;
 
 Class Response
 {

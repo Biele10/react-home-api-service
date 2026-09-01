@@ -1,10 +1,10 @@
 <?php
 
-namespace App\controllers\hardware;
+namespace Samaritan\controllers\hardware;
 
 // HardwareController class that child classes inherit which contains some basic functions that hardware may need
 
-abstract Class HardwareController extends \App\controllers\Controller
+abstract Class HardwareController extends \Samaritan\controllers\Controller
 {
     
 }

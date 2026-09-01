@@ -1,39 +1,266 @@
-# HomeAPI Project
+# Samaritan
 
-This project incorporates web development and embedded engineering in order to build a website which will allow for people at home to interact with hardware.
-The server is run on a Raspberry Pi, this is connected to an Arduino UNO R3 which is connected to a breadboard with hardware attached.
+## Short Message From Developer
 
-# Frontend
+This project has been written **90% by hand**, with occassional functions being written by AI (stuff like CRC algorithms for checksum). In an age where speed is prioritised over learning and overcoming obstacles, I wanted to ensure that if someone asked me what any line of code did in this project, I could tell them straight away. I have already learnt a great deal about software engineering and architecture through this project, in web development and embedded engineering. I hope that anyone who stumbles upon this might also just take the time to appreciate the importance of learning through failure.
 
-This is built using ReactJS, I have created multiple classes which can later be reused, however for now the website is just one static page.
-All React code is in the [src](./src/) folder.
+I named this program Samaritan because it is intended to be helpful, like the good Samaritan.
 
-The [crud.js](./src/api/crud.js) file is what takes inputs from the frontend and then sends to the backend, this is the frontend handler for sending
-and receiving information from the backend.
+The rest of the README was written by AI, as I found that it would explain things far better than I could in a way that was understandable. As you can see, I am not opposed to AI, I simply know its place.
 
-# Backend
+Happy learning.
 
-This is built using raw PHP which is comprised of a variety of classes which relate to different pieces of hardware which will store the related methods.
-All PHP code is stored in the [code](./backend/code/) folder.
+## Samaritan
 
-In order to send data to the Arduino, PHP receives the requests from the JavaScript frontend and passes them to a Python flask server which is also being
-run on the Pi, the code for the Python is stored in [arduino.py](./backend/code/arduino/python-api/arduino.py).
+Samaritan is a home automation project combining web development and embedded engineering to allow hardware connected to an Arduino to be controlled through a web interface.
 
-Python has its own serial library which allows for direct communication with the arduino, allowing for PHP requests to be sent to Python and then passed directly
-to the Arduino.
+The system runs on a **Raspberry Pi**, which acts as the server and communicates with an **Arduino UNO R3**. The Arduino is connected to various hardware components on a breadboard.
 
-# Embedded Code
+The overall communication flow is:
 
-This is built using C++, the code for this is stored in the [embedded-code](./backend/code/arduino/embedded-code/) folder.
-I have created my own custom [hash table](./backend/code/arduino/embedded-code/src/utilities/HashStruct.cpp) structure which is used to store multiple parameters 
-in an array-like structure with O(1) lookups, improving efficiency.
+┌─────────────┐    HTTP    ┌─────────────┐   Unix Socket   ┌─────────────┐   Serial   ┌─────────────┐
+│    React    │ ─────────► │   PHP API   │ ─────────────►  │    Daemon   │ ─────────► │   Arduino   │ ─────► Hardware
+│   Frontend  │            │  FastRoute  │                 │ Raspberry Pi│            │    UNO R3   │
+└─────────────┘            └─────────────┘                 └─────────────┘            └─────────────┘
 
-I have also created a custom parameter [parser](./backend/code/arduino/embedded-code/src/utilities/parser.cpp) that takes inputs from Python and parses them and stores 
-them correctly in the hash table. 
+## Frontend
 
-Commands are expected to be passed in this format:  module=Led&method=power. The parser seperate key and value by the = and determines the next key by &.
+The frontend is built using **ReactJS**.
 
-The main program flow is all handled via the [ArduinoController](./backend/code/arduino/embedded-code/src/hardware/ArduinoController.cpp) class which correclty sends
-data to the right modules.
+All React code is contained in the [`src`](./src/) directory.
 
-As of right now the Arduino is linked to two pieces of hardware, a red LED and the onboard LED. In the next version I plan to introduce an ultrasonic sensor.
+The [`crud.js`](./src/api/crud.js) file provides the interface between the frontend and the PHP API. It is responsible for sending HTTP requests and handling responses from the backend.
+
+The frontend communicates with the PHP API rather than communicating directly with the Arduino.
+
+## Backend
+
+The backend is written in **PHP** and is responsible for providing the HTTP API used by the frontend.
+
+All PHP application code is stored in [`backend/code`](./backend/code/).
+
+### HTTP Routing
+
+API routes are handled using **FastRoute**. FastRoute determines which endpoint should handle an incoming HTTP request based on its HTTP method and URL.
+
+For example:
+
+```text
+PUT /hardware/redLed/power
+```
+
+is matched to the appropriate PHP [handler](./backend/code/controllers/hardware/led/LedController.php).
+
+This keeps HTTP routing separate from the code responsible for communicating with the Arduino.
+
+### Adding a PHP Endpoint
+
+PHP endpoints are registered using **FastRoute**.
+
+To add a new endpoint:
+
+1. **Define the route** in the appropriate routes file in the [routes](./backend/code/routes/) directory.
+2. **Create the controller** for the request in the [controllers](./backend/code/controllers/) directory.
+3. **Create the actual function** you want to write in the [services](./backend/code/services/) directory.
+4. If the endpoint communicates with the Arduino, have the handler send the appropriate command through the daemon.
+
+For example:
+
+```php
+$dispatcher->addRoute(
+    'PUT',
+    '/hardware/redLed/power',
+    function () {
+        // Handle request
+    }
+);
+```
+
+Keep the HTTP route responsible for handling the web request, while Arduino-specific communication should remain separate from the HTTP routing logic.
+
+
+### Arduino Communication
+
+PHP does not communicate directly with the Arduino.
+
+Instead, requests that require hardware interaction are sent to a **daemon running on the Raspberry Pi**. PHP communicates with this daemon through a **Unix domain socket**.
+
+The daemon is responsible for communicating with the Arduino over its serial connection.
+
+This separation means that the PHP API does not need to manage the Arduino's serial connection itself.
+
+The communication flow is therefore:
+
+```text
+React
+  │
+  │ HTTP
+  ▼
+PHP / FastRoute
+  │
+  │ Unix socket
+  ▼
+Raspberry Pi daemon
+  │
+  │ Serial
+  ▼
+Arduino
+```
+
+## Embedded Code
+
+The Arduino software is written in **C++** and is stored in [`backend/code/arduino/embedded-code`](./backend/code/arduino/embedded-code/).
+
+The embedded application is responsible for:
+
+* Receiving and validating binary packets.
+* Extracting the command and payload.
+* Dispatching commands to the correct hardware method.
+* Managing the connected hardware.
+
+### ArduinoController
+
+[`ArduinoController`](./backend/code/arduino/embedded-code/src/hardware/ArduinoController.cpp) manages the hardware connected to the Arduino.
+
+Hardware objects are stored as private attributes of `ArduinoController` and are created in its constructor.
+
+For example:
+
+```cpp
+class ArduinoController
+{
+public:
+    ArduinoController(int redLedPin);
+
+    Led& getRedLed();
+
+private:
+    Led redLed;
+};
+```
+
+Hardware can then be accessed elsewhere through its getter.
+
+`setupHardware()` is responsible for Arduino-specific hardware configuration such as `pinMode()`.
+
+This keeps hardware ownership and configuration in one place.
+
+### CommandDispatcher
+
+The [`CommandDispatcher`](./backend/code/arduino/embedded-code/src/) is responsible for mapping incoming commands to hardware methods.
+
+Endpoints are registered using the templated `registerEndpoint()` function:
+
+```cpp
+registerEndpoint(RED_LED_POWER, ac.getRedLed(), &Led::power);
+```
+
+This associates:
+
+```text
+RED_LED_POWER
+      │
+      ▼
+ArduinoController::getRedLed()
+      │
+      ▼
+Led::power()
+```
+
+The endpoint system uses a common base endpoint type while allowing each endpoint to retain the type information required to call its specific hardware method.
+
+This allows different hardware classes to be registered in the same endpoint table without requiring every hardware class to inherit from a common hardware interface.
+
+### Endpoint Commands
+
+Each endpoint is assigned a unique **2-byte command**.
+
+Commands are defined in [`Endpoints.hpp`](./backend/code/arduino/embedded-code/src/).
+
+For example:
+
+```cpp
+constexpr uint16_t RED_LED_POWER 0x0003
+```
+
+The command acts as the identifier used by the Arduino to determine which endpoint should be executed.
+
+Commands must be unique and must not overlap with existing commands.
+
+## Hash Table
+
+A custom [`HashTable`](./backend/code/arduino/embedded-code/src/utilities/HashTable.hpp) is used by the embedded endpoint system to store and retrieve registered endpoints.
+
+The command is used as the key, allowing the dispatcher to locate an endpoint efficiently without requiring a long chain of conditional statements.
+
+Conceptually:
+
+```text
+Command
+   │
+   ▼
+Hash Table
+   │
+   ▼
+Endpoint
+   │
+   ▼
+Hardware method
+```
+
+For example:
+
+```text
+0x0003
+  │
+  ▼
+RED_LED_POWER
+  │
+  ▼
+Led::power()
+```
+
+The hash table is particularly useful on the Arduino because the endpoint lookup needs to be lightweight and predictable.
+
+## Packets
+
+Communication between the Raspberry Pi daemon and the Arduino uses **binary packets**.
+
+The packet structure is:
+
+```text
+┌────────┬────────┬─────────┬─────────────┬──────────┐
+│ HEADER │ LENGTH │ COMMAND │   PAYLOAD   │ CHECKSUM │
+│ 1 byte │ 1 byte │ 2 bytes │ N bytes     │ 2 bytes  │
+└────────┴────────┴─────────┴─────────────┴──────────┘
+```
+
+For example:
+
+```text
+┌──────┬───────┬──────────┬──────────────┬──────────┐
+│  AA  │  03   │  01 03   │  01 F4 03    │   ...    │
+└──────┴───────┴──────────┴──────────────┴──────────┘
+ Header  Length   Command     Payload      Checksum
+```
+
+The **command** identifies the endpoint that should be executed, while the payload contains any data required by that endpoint.
+
+The Arduino validates the packet before passing the command to the `CommandDispatcher`.
+
+## Adding an Endpoint
+
+For instructions on adding a new endpoint, see **[Adding an Endpoint](./backend/code/arduino/embedded-code/README.md)**.
+
+In general, the process is:
+
+1. Assign a unique 2-byte command in `Endpoints.hpp`.
+2. Add and configure new hardware in `ArduinoController` if required.
+3. Add a getter for the hardware.
+4. Register the endpoint in `CommandDispatcher`.
+
+For example:
+
+```cpp
+registerEndpoint(RED_LED_POWER, ac.getRedLed(), &Led::power);
+```

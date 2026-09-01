@@ -1,3 +1,3 @@
 <?php
 
-use App\Controllers\HardwareController;
+use Samaritan\Controllers\HardwareController;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\hardware;
+namespace Samaritan\hardware;
 
 // Hardware class that child classes inherit which contains some basic functions that hardware may need
 
@@ -16,16 +16,6 @@ abstract Class Hardware
     public function getPin(): int
     {
         return $this->pin;
-    }
-
-    final protected function sendCommand(string $command, array $params = []): ?array
-    {
-        if (!empty($params))
-        {
-            $command .=  PARSER_SEPARATOR . $this->_parseParams($params);
-        }
-
-        return \App\arduino\ArduinoApi::_get($command);
     }
 
     /**

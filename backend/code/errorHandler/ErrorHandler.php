@@ -1,6 +1,6 @@
 <?php
 
-namespace App\errorHandler;
+namespace Samaritan\errorHandler;
 use Throwable;
 
 Class ErrorHandler

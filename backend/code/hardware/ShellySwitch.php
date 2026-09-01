@@ -1,5 +1,5 @@
 <?php
-namespace App\hardware;
+namespace Samaritan\hardware;
 
 /**
  * Class represents a shelly dimmer switch which

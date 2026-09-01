@@ -1,7 +1,7 @@
 <?php
 
-namespace App\routes\hardware\led;
-use App\controllers\hardware\led\OnBoardLedController;
+namespace Samaritan\routes\hardware\led;
+use Samaritan\controllers\hardware\led\OnBoardLedController;
 
 $r->addRoute(
     'PUT',

@@ -7,25 +7,11 @@
 Led::Led(int pinNumber, bool initialState) : pin(pinNumber), state(initialState) {};
 
 /**
- * Handles all functions in relation to the LED.
- */
-Result Led::handler(HashTable* command_and_params)
-{
-    String method = command_and_params->getValue("method");
-    if (method == "power")
-    {
-        return this->power();
-    }
-
-    return Result::Error(ErrorCode::INVALID_COMMAND, "No such method found.");
-}
-
-/**
  * Function that turns the LED on or off, this
  * is only used via the website because the website does not
  * have a way of tracking the state of the LED.
  */
-Result Led::power()
+Result Led::power(uint16_t* args, uint8_t count)
 {
     if ((this->state) == false)
     {

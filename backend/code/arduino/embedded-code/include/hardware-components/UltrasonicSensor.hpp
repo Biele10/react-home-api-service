@@ -14,7 +14,6 @@ class UltrasonicSensor
 {
     public:
         UltrasonicSensor(int trigPin, int echoPin);
-        Result handler(HashTable* command_and_params);       // function that handles what to do with user input
         size_t getDistance();
         bool doEcho();
         MovementResult movementCheck(size_t avgDistance);     // average distance is used to determine what to measure against to see if movement has been detected

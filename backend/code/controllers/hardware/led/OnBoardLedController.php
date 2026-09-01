@@ -1,21 +1,21 @@
 <?php
 
-namespace App\controllers\hardware\led;
+namespace Samaritan\controllers\hardware\led;
 
-Class OnBoardLedController extends \App\controllers\hardware\HardwareController
+Class OnBoardLedController extends \Samaritan\controllers\hardware\HardwareController
 {
-    public function power() : \App\resources\Response
+    public function power() : \Samaritan\resources\Response
     {
-        $onBoardLedService = new \App\services\hardware\led\OnBoardLedService();
+        $onBoardLedService = new \Samaritan\services\hardware\led\OnBoardLedService();
         $result = $onBoardLedService->power();
 
         $this->data = $result['data'];
 
         if ($result['success'] !== true)
         {
-            return $this->error();
+            return $this->Error();
         }
 
-        return $this->success();
+        return $this->Success();
     }
 }
