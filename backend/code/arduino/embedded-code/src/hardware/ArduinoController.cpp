@@ -1,10 +1,9 @@
 #include <Arduino.h>
+#include "hardware-components/UltrasonicSensor.hpp"
 #include "config/config.hpp"
 #include "structures/HashTable.hpp"
 #include "controller/ArduinoController.hpp"
 #include "output/Result.hpp"
-
-int redLedPin = Config::RED_LED_PIN;
 
 /**
  * Constructor
@@ -17,26 +16,16 @@ ArduinoController::ArduinoController(int redLedPin) : redLed(redLedPin), onboard
  */
 void ArduinoController::setupHardware()
 {
-  pinMode(LED_BUILTIN, OUTPUT);
-  pinMode(redLedPin, OUTPUT);   // sets up red LED
-};
+  pinMode(LED_BUILTIN, OUTPUT); //onboard LED
+  pinMode(Config::RED_LED_PIN, OUTPUT);
+}
 
-/**
- * Function that handles commands sent from server
- * and assigns them to the correct class and method.
- */
-Result ArduinoController::handleCommand(HashTable* command_and_params)
+Led& ArduinoController::getRedLed()
 {
-  String module = command_and_params->getValue("module");   // fetches module to interact with
-  if (module == "redLed")
-  {
-    return redLed.handler(command_and_params);
-  }
+  return this->redLed;
+}
 
-  if (module == "onboardLed")
-  {
-    return onboardLed.handler(command_and_params);
-  }
-
-  return Result::Error(ErrorCode::MODULE_NOT_EXIST, "Module does not exist.");
-};
+OnboardLed& ArduinoController::getOnBoardLed()
+{
+  return this->onboardLed;
+}

@@ -1,13 +1,31 @@
 <?php
 
-namespace App\hardware;
-use App\arduino\ArduinoApi;
-// This is where all hardware related requests are sent to then use the correct class
+namespace Samaritan\hardware;
 
-Class Hardware
+// Hardware class that child classes inherit which contains some basic functions that hardware may need
+
+abstract Class Hardware
 {
-    static public function _command(string $commandToSend)
+    protected int $pin;
+
+    public function __construct(int $pin)
     {
-       return ArduinoApi::_get($commandToSend);
+        $this->pin = $pin;
+    }
+
+    public function getPin(): int
+    {
+        return $this->pin;
+    }
+
+    /**
+     * Takes associative array of parameters and parses into a string
+     * @param array $params
+     * @return void
+     */
+    private function _parseParams(array $params) : string
+    {
+        // add logic so if error, just return "" instead
+        return "TEMP";
     }
 }

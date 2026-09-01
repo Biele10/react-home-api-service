@@ -6,22 +6,7 @@
 
 OnboardLed::OnboardLed(bool initialState) : state(initialState) {};
 
-/**
- * Handles all functions in relation to the onboard LED.
- */
-Result OnboardLed::handler(HashTable* command_and_params)
-{
-    String method = command_and_params->getValue("method");
-    if (method == "power")
-    {
-        return this->power(command_and_params);
-    }
-
-    return Result::Error(ErrorCode::INVALID_COMMAND, "No such method found.");
-}
-
-
-Result OnboardLed::power(HashTable* command_and_params)
+Result OnboardLed::power(uint16_t* args, uint8_t count)
 {
     if ((this->state) == false)
     {
@@ -34,5 +19,5 @@ Result OnboardLed::power(HashTable* command_and_params)
     }
 
     this->state = !(this->state);
-    return Result::Ok("Changed state of onboard LED.");
+    return Result::Success("Changed state of onboard LED.");
 }

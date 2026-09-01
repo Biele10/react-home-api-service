@@ -1,12 +1,13 @@
 import Button from "../ux/Button";
-import get from "../api/crud";
+import Slider from "../ux/Slider";
+import { get, put, post, del } from "../api/crud";
 
 function HomePageBody() {
   return (
     <div>
           <Button
             text="Onboard LED"
-            onClickReference={OnboardLedButton}
+            onClickReference={onboardLedButton}
             style=
             {{
                 minHeight: '100%',
@@ -16,25 +17,40 @@ function HomePageBody() {
 
           <Button
             text="Red LED"
-            onClickReference={RedLedButton}
+            onClickReference={redLedButton}
             style=
             {{
                 minHeight: '100%',
                 margin: '0 0 15px 0'
             }}
           />
+
+          <Slider
+            style=
+            {{
+              minHeight: '100%',
+                margin: '0 0 15px 0'
+            }}
+            onSlideReference={adjustLighting}/>
     </div>
   );
 }
 
-function OnboardLedButton()
+function onboardLedButton()
 {
-  get('command', 'onboardLed', 'power');
+  put('hardware/onBoardLed/power');
 }
 
-function RedLedButton()
+function redLedButton()
 {
-  get('command', 'redLed', 'power');
+  put('hardware/redLed/power');
+}
+
+function adjustLighting(e)
+{
+  const lightValue = Number(e.target.value);
+  const body = {light_percentage: lightValue, debounce_time: 5};
+  var res = put('hardware/shelly/adjustLight', body);
 }
 
 export default HomePageBody;

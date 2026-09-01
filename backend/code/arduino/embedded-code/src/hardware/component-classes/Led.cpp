@@ -7,21 +7,11 @@
 Led::Led(int pinNumber, bool initialState) : pin(pinNumber), state(initialState) {};
 
 /**
- * Handles all functions in relation to the LED.
+ * Function that turns the LED on or off, this
+ * is only used via the website because the website does not
+ * have a way of tracking the state of the LED.
  */
-Result Led::handler(HashTable* command_and_params)
-{
-    String method = command_and_params->getValue("method");
-    if (method == "power")
-    {
-        return this->power(command_and_params);
-    }
-
-    return Result::Error(ErrorCode::INVALID_COMMAND, "No such method found.");
-}
-
-
-Result Led::power(HashTable* command_and_params)
+Result Led::power(uint16_t* args, uint8_t count)
 {
     if ((this->state) == false)
     {
@@ -34,5 +24,36 @@ Result Led::power(HashTable* command_and_params)
     }
 
     this->state = !(this->state);
-    return Result::Ok("Changed state of LED.");
+    return Result::Success("Changed state of the LED");
+}
+
+// The on and off functions are used internally for specific behaviour
+// as current state of the LED can easily be tracked.
+
+/**
+ * Turns LED on.
+ */
+Result Led::on()
+{
+    if ((this->state) == false)             // these state checks are done to avoid unecessary digitalWrites
+    {
+        digitalWrite(pin, HIGH);
+    }
+
+    this->state = !(this->state);
+    return Result::Success("Turned LED on.");
+}
+
+/**
+ * Turns LED off.
+ */
+Result Led::off()
+{
+    if ((this->state) == true)
+    {
+        digitalWrite(pin, LOW);
+    }
+
+    this->state = !(this->state);
+    return Result::Success("Turned LED off.");
 }

@@ -1,7 +1,10 @@
 {
     "autoload": {
         "psr-4": {
-            "App\\": "code/"
+            "Samaritan\\": "code/"
         }
+    },
+    "require": {
+        "nikic/fast-route": "^1.3"
     }
 }
