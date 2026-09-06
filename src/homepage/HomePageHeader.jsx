@@ -4,7 +4,7 @@ function HomePageHeader()
 {
     return(
         <Header
-        text="HomeAPI"
+        text="Samaritan"
         style={
             {
                 minWidth: '50%',

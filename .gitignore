@@ -11,6 +11,8 @@
 
 # production
 /build
+Samaritan-Build/
+dist/
 
 #docker
 build-production.sh
@@ -33,4 +35,3 @@ yarn-error.log*
 #configs
 /backend/vendor/
 /backend/code/config/
-/daemon/code/config.hpp
