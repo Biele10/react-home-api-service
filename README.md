@@ -17,7 +17,7 @@ Samaritan is a home automation project combining web development and embedded en
 The system runs on a **Raspberry Pi**, which acts as the server and communicates with an **Arduino UNO R3**. The Arduino is connected to various hardware components on a breadboard.
 
 The overall communication flow is:
-
+```text
 +----------------+       HTTP       +----------------+    Unix Socket    +----------------+     Serial     +----------------+
 | React Frontend | ---------------> |    PHP API     | ----------------> | C++ Daemon     | ------------> | Arduino UNO R3 |
 |                |                  |   FastRoute    |                   | Raspberry Pi   |                |                |
@@ -27,6 +27,7 @@ The overall communication flow is:
                                                                                                                +----------+
                                                                                                                | Hardware |
                                                                                                                +----------+
+```
 
 ## Setup & Deployment
 
@@ -290,20 +291,25 @@ Communication between the Raspberry Pi daemon and the Arduino uses **binary pack
 
 The packet structure is:
 
+```text
 +--------+--------+---------+---------+----------+
 | HEADER | LENGTH | COMMAND | PAYLOAD | CHECKSUM |
 +--------+--------+---------+---------+----------+
 | 1 byte | 1 byte | 2 bytes | N bytes | 2 bytes  |
 +--------+--------+---------+---------+----------+
+```
 
 For example:
 
+```text
 +----+--------+---------+-------------+----------+
 | AA |   03   |  01 03  |  01 F4 03  | CHECKSUM |
 +----+--------+---------+-------------+----------+
 |    |        |         |             |          |
 |    |        |         |             |          |
 +----+--------+---------+-------------+----------+
+```
+
 Header Length  Command     Payload      Checksum
 
 The **command** identifies the endpoint that should be executed, while the payload contains any data required by that endpoint.
