@@ -4,7 +4,7 @@
 
 This project has been written **90% by hand**, with occassional functions being written by AI (stuff like CRC algorithms for checksum). In an age where speed is prioritised over learning and overcoming obstacles, I wanted to ensure that if someone asked me what any line of code did in this project, I could tell them straight away. I have already learnt a great deal about software engineering and architecture through this project, in web development and embedded engineering. I hope that anyone who stumbles upon this might also just take the time to appreciate the importance of learning through failure.
 
-I named this program Samaritan because it is intended to be helpful, like the good Samaritan.
+I named this program Samaritan because it is intended to be helpful, like the good Samaritan... and also partially because of Person of Interest ;).
 
 The rest of the README was written by AI, as I found that it would explain things far better than I could in a way that was understandable. As you can see, I am not opposed to AI, I simply know its place.
 
@@ -18,10 +18,72 @@ The system runs on a **Raspberry Pi**, which acts as the server and communicates
 
 The overall communication flow is:
 
-┌─────────────┐    HTTP    ┌─────────────┐   Unix Socket   ┌─────────────┐   Serial   ┌─────────────┐
-│    React    │ ─────────► │   PHP API   │ ─────────────►  │    Daemon   │ ─────────► │   Arduino   │ ─────► Hardware
-│   Frontend  │            │  FastRoute  │                 │ Raspberry Pi│            │    UNO R3   │
-└─────────────┘            └─────────────┘                 └─────────────┘            └─────────────┘
++----------------+       HTTP       +----------------+    Unix Socket    +----------------+     Serial     +----------------+
+| React Frontend | ---------------> |    PHP API     | ----------------> | C++ Daemon     | ------------> | Arduino UNO R3 |
+|                |                  |   FastRoute    |                   | Raspberry Pi   |                |                |
++----------------+                  +----------------+                   +----------------+                +----------------+
+                                                                                                                    |
+                                                                                                                    v
+                                                                                                               +----------+
+                                                                                                               | Hardware |
+                                                                                                               +----------+
+
+## Setup & Deployment
+
+Samaritan is designed to be **quick and easy to set up**, with the installation and deployment process handled almost entirely by scripts.
+
+### Requirements
+
+The Raspberry Pi is expected to already be:
+
+- Connected to the network
+- Running a basic Raspberry Pi server installation
+- Accessible over SSH
+
+No Samaritan software needs to be installed on the Raspberry Pi beforehand. The installation script will install and configure everything required by Samaritan.
+
+The **Arduino UNO R3 must be connected to the Raspberry Pi via USB during installation**. This allows the installer to detect the Arduino and configure the required serial connection automatically.
+
+### Installation
+
+On a new development machine, clone the repository and run [install.bat](./scripts/install.bat):
+
+```bash
+scripts/install.bat
+```
+
+The installer will:
+
+- Check and install the required development tools
+- Prepare the Raspberry Pi with the required software
+- Configure Apache and the Samaritan daemon
+- Configure the required permissions and services
+- Detect the connected Arduino
+- Configure the Arduino serial connection
+
+Once installation is complete, the Raspberry Pi is ready to run Samaritan.
+
+### Deployment
+
+Deploying a new version is as simple as running [deploy.bat](./scripts/deploy.bat):
+
+```bash
+scripts/deploy.bat
+```
+
+This automatically:
+
+- Builds the React frontend
+- Installs and prepares the PHP backend
+- Compiles the Arduino firmware
+- Builds the C++ daemon
+- Uploads everything to the Raspberry Pi
+- Uploads the firmware to the Arduino
+- Restarts the required services
+
+After the initial setup, **deploying Samaritan should require little more than running one script**.
+
+Simply open your web browser to your Raspberry Pi IP on your network e.g. 192.168.1.88 and you should see the Samaritan homepage.
 
 ## Frontend
 
@@ -228,21 +290,21 @@ Communication between the Raspberry Pi daemon and the Arduino uses **binary pack
 
 The packet structure is:
 
-```text
-┌────────┬────────┬─────────┬─────────────┬──────────┐
-│ HEADER │ LENGTH │ COMMAND │   PAYLOAD   │ CHECKSUM │
-│ 1 byte │ 1 byte │ 2 bytes │ N bytes     │ 2 bytes  │
-└────────┴────────┴─────────┴─────────────┴──────────┘
-```
++--------+--------+---------+---------+----------+
+| HEADER | LENGTH | COMMAND | PAYLOAD | CHECKSUM |
++--------+--------+---------+---------+----------+
+| 1 byte | 1 byte | 2 bytes | N bytes | 2 bytes  |
++--------+--------+---------+---------+----------+
 
 For example:
 
-```text
-┌──────┬───────┬──────────┬──────────────┬──────────┐
-│  AA  │  03   │  01 03   │  01 F4 03    │   ...    │
-└──────┴───────┴──────────┴──────────────┴──────────┘
- Header  Length   Command     Payload      Checksum
-```
++----+--------+---------+-------------+----------+
+| AA |   03   |  01 03  |  01 F4 03  | CHECKSUM |
++----+--------+---------+-------------+----------+
+|    |        |         |             |          |
+|    |        |         |             |          |
++----+--------+---------+-------------+----------+
+Header Length  Command     Payload      Checksum
 
 The **command** identifies the endpoint that should be executed, while the payload contains any data required by that endpoint.
 

@@ -1,0 +1,23 @@
+[Unit]
+Description=Samaritan C++ communication daemon
+After=network.target
+
+[Service]
+Type=simple
+
+User=ubuntu
+Group=samaritan
+
+WorkingDirectory=/var/www/Samaritan/daemon
+
+ExecStart=/var/www/Samaritan/daemon/build/samaritan-daemon
+
+Restart=on-failure
+RestartSec=2
+
+RuntimeDirectory=samaritan
+RuntimeDirectoryMode=0770
+UMask=0007
+
+[Install]
+WantedBy=multi-user.target
