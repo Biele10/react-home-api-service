@@ -1,3 +1,4 @@
+# Line endings
 *.bat text eol=crlf
 *.sh  text eol=lf
 *.php text eol=lf
@@ -9,3 +10,7 @@
 *.html text eol=lf
 *.json text eol=lf
 *.md text eol=lf
+
+# GitHub language statistics
+*.bat linguist-vendored
+*.cmd linguist-vendored
